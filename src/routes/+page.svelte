@@ -1,1 +1,6 @@
-<button class="btn btn-primary">Hello daisyUI</button>
+<script>
+	import Navbar from '$lib/components/Navbar.svelte';
+	import NavbarHeader from './components/NavbarHeader.svelte';
+</script>
+
+<NavbarHeader />
