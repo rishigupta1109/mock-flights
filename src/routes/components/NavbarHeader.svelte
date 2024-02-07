@@ -11,13 +11,13 @@
 	<p class="heading-2">Flights</p>
 	<div class="flex justify-between items-stretch gap-4 ml-auto">
 		<span
-			class="flex items-center justify-between gap-2 cursor-pointer bg-white rounded-md text-primary p-2"
+			class="flex items-center justify-between gap-2 cursor-pointer bg-base-200 rounded-md text-primary p-2"
 		>
-			<WalletIcon color="var(--primary)" testId="wallet-icon" />
+			<WalletIcon color="primary" testId="wallet-icon" />
 			${wallet}
 		</span>
 		<span
-			class="flex items-center justify-between cursor-pointer bg-white rounded-md text-primary p-2"
+			class="flex items-center justify-between cursor-pointer bg-base-200 rounded-md text-primary p-2"
 		>
 			<PercentageIcon color="primary" testId="percentage-icon" />
 		</span>

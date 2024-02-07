@@ -3,6 +3,6 @@
 	import 'tailwindcss/tailwind.css';
 </script>
 
-<div class="bg-nu-grey min-h-screen text-white">
+<div class="bg-base-100 min-h-screen text-white">
 	<slot />
 </div>
