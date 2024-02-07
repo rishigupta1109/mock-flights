@@ -6,14 +6,14 @@ describe('NavbarHeader component', () => {
 		const { getByText, getByTestId } = render(NavbarHeader);
 
 		expect(getByText('Flights')).toBeInTheDocument();
-		expect(getByText('$1500')).toBeInTheDocument();
+		expect(getByText('₹1,500')).toBeInTheDocument();
 		expect(getByTestId('wallet-icon')).toBeInTheDocument();
 		expect(getByTestId('percentage-icon')).toBeInTheDocument();
 		expect(getByTestId('three-dots')).toBeInTheDocument();
 	});
 	it('should render the amount of money in wallet passed as props', async () => {
 		const { getByText } = render(NavbarHeader, { props: { wallet: 2000 } });
-		expect(getByText('$2000')).toBeInTheDocument();
+		expect(getByText('₹2,000')).toBeInTheDocument();
 	});
 	it("should have bg as 'bg-primary'", () => {
 		const { getByTestId } = render(NavbarHeader);
