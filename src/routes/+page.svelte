@@ -6,7 +6,7 @@
 </script>
 
 <NavbarHeader />
-<div class="flex flex-col p-8 gap-4">
+<div class="flex flex-col p-4 gap-4">
 	<SearchFlight />
 	<UpcomingFlights />
 	<RecentSearches />
