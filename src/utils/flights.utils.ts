@@ -5,3 +5,11 @@ export function getFormattedWallet(wallet: number) {
 		maximumFractionDigits: 0
 	}).format(wallet);
 }
+
+export function catchError(callback: Function, params?: any) {
+	try {
+		return callback(params);
+	} catch (error) {
+		console.error(error);
+	}
+}

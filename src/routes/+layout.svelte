@@ -1,8 +1,30 @@
-<script>
-	import Navbar from '$lib/components/Navbar.svelte';
+<script lang="ts">
 	import 'tailwindcss/tailwind.css';
+	import '../global.css';
+	import { onMount } from 'svelte';
+	import { searchCityStore, upcomingBookingStore } from '$lib/flights-commons/flights.store';
+
+	onMount(async () => {
+		console.log('layout mounted', await searchCityStore.getSearchCity('del'));
+	});
 </script>
 
 <div class="bg-base-100 min-h-screen text-white">
 	<slot />
 </div>
+
+<style>
+	:global(html) {
+		font-size: 10px;
+	}
+	@media (min-width: 281px) {
+		:global(html) {
+			font-size: 12px;
+		}
+	}
+	@media (min-width: 375px) {
+		:global(html) {
+			font-size: 14px;
+		}
+	}
+</style>

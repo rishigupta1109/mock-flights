@@ -15,6 +15,7 @@
 			class="flex items-center justify-between gap-2 cursor-pointer bg-base-200 rounded-md text-primary p-1 px-2"
 		>
 			<WalletIcon color="primary" testId="wallet-icon" />
+
 			{getFormattedWallet(wallet)}
 		</span>
 		<span
