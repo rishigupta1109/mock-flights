@@ -5,7 +5,7 @@
 
 <svg
 	data-testid={testId}
-	class="h-full w-full fill-current stroke-current text-{color}"
+	class="h-full w-full fill-current stroke-current text-{color} border-2 border-primary rounded-full"
 	viewBox="0 0 36 36"
 	fill="none"
 	xmlns="http://www.w3.org/2000/svg"

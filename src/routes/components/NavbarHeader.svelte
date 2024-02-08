@@ -9,20 +9,20 @@
 </script>
 
 <Navbar>
-	<p class="heading-2">Flights</p>
+	<p class="heading-1">Flights</p>
 	<div class="flex justify-between items-stretch gap-4 ml-auto">
 		<span
-			class="flex items-center justify-between gap-2 cursor-pointer bg-base-200 rounded-md text-primary p-2"
+			class="flex items-center justify-between gap-2 cursor-pointer bg-base-200 rounded-md text-primary p-1 px-2"
 		>
 			<WalletIcon color="primary" testId="wallet-icon" />
 			{getFormattedWallet(wallet)}
 		</span>
 		<span
-			class="flex items-center justify-between cursor-pointer bg-base-200 rounded-md text-primary p-2"
+			class="flex items-center justify-between cursor-pointer bg-base-200 rounded-md text-primary p-1 px-2"
 		>
 			<PercentageIcon color="primary" testId="percentage-icon" />
 		</span>
-		<span class="cursor-pointer min-h-full flex justify-center items-center">
+		<span class="cursor-pointer min-h-full flex justify-center items-center px-2">
 			<ThreeDots testId="three-dots" />
 		</span>
 	</div>

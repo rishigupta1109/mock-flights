@@ -5,9 +5,9 @@
 </script>
 
 <div class="flex items-center bg-base-200 rounded-md p-5 gap-2">
-	<div class="flex flex-col justify-around items-center gap-1">
+	<div class="flex flex-col justify-around items-center py-1 gap-1">
 		<span class="h-2 w-2 rounded-full bg-primary" />
-		<span class="h-10 w-[1px] bg-primary" />
+		<span class="h-7 w-[1px] bg-primary" />
 		<AirplaneIcon color="primary" testId="airplane-icon" />
 	</div>
 	<div class="flex flex-col w-full justify-between gap-2">
