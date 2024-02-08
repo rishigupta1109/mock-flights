@@ -1,6 +1,6 @@
 <script>
 	import RightArrowHalf from '$lib/icons/rightArrowHalf.svelte';
-	import UpcomingFlightsCarousel from './UpcomingFlightsCarousel.svelte';
+	import Carousel from './Carousel.svelte';
 </script>
 
 <div class="w-full flex flex-col">
@@ -13,5 +13,5 @@
 			<span class="badge badge-error text-base-200">new</span> Web Check-in
 		</p>
 	</span>
-	<UpcomingFlightsCarousel />
+	<Carousel isRecent={false} />
 </div>
