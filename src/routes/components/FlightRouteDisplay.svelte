@@ -11,9 +11,9 @@
 		<AirplaneIcon color="primary" testId="airplane-icon" />
 	</div>
 	<div class="flex flex-col w-full justify-between gap-2">
-		<CityWithCodeTag city="Delhi" code="DEL" />
+		<CityWithCodeTag type={'src'} city="Delhi" code="DEL" />
 		<span class="w-full border border-spacing-4 border-dashed border-base-300" />
-		<CityWithCodeTag city="Banglore" code="BLR" />
+		<CityWithCodeTag type="dest" city="Banglore" code="BLR" />
 	</div>
 	<button class="border h-10 aspect-square rounded-full border-primary">
 		<ExchangeIcon color="primary" testId="exchange-icon" />
