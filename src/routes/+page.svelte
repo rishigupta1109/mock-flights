@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Loading from '$lib/components/Loading.svelte';
 	import NavbarHeader from './components/NavbarHeader.svelte';
 	import RecentSearches from './components/RecentSearches.svelte';
 	import SearchFlight from './components/SearchFlight.svelte';
@@ -11,3 +12,4 @@
 	<UpcomingFlights />
 	<RecentSearches />
 </div>
+<Loading />

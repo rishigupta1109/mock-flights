@@ -1,12 +1,6 @@
 <script lang="ts">
 	import 'tailwindcss/tailwind.css';
 	import '../global.css';
-	import { onMount } from 'svelte';
-	import { searchCityStore, upcomingBookingStore } from '$lib/flights-commons/flights.store';
-
-	onMount(async () => {
-		console.log('layout mounted', await searchCityStore.getSearchCity('del'));
-	});
 </script>
 
 <div class="bg-base-100 min-h-screen text-white">

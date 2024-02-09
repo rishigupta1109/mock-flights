@@ -9,6 +9,7 @@ import {
 } from './flights.api';
 import type {
 	AirportListResponse,
+	City,
 	ConfigResponse,
 	FlightSearchRequest,
 	FlightSearchResponse,
@@ -17,6 +18,22 @@ import type {
 import dayjs from 'dayjs';
 import { catchError } from '../../utils/flights.utils';
 
+const createLoadingStore = () => {
+	const { subscribe, set, update } = writable(false);
+	return {
+		subscribe,
+		set,
+		update,
+		start: () => {
+			set(true);
+		},
+		stop: () => {
+			set(false);
+		}
+	};
+};
+
+export const loadingStore = createLoadingStore();
 async function createConfigStore() {
 	const data: ConfigResponse = await catchError(getConfig);
 	const { subscribe, set, update } = writable<ConfigResponse>(data);
@@ -51,7 +68,15 @@ async function createConfigStore() {
 			return searchRequest.partnerCurrency;
 		},
 		getDefaultTravellerClass: () => {
-			return searchRequest.travellerClass;
+			let travellerClass = searchRequest.travellerClass.toLocaleUpperCase();
+			let travellerClassObj = searchRequest.travellers.find(
+				(traveller) => traveller.key === travellerClass
+			);
+			if (travellerClassObj === undefined) {
+				travellerClassObj = searchRequest.travellers[0];
+			}
+
+			return travellerClassObj;
 		},
 		getGuests: () => {
 			return searchRequest.guests;
@@ -136,6 +161,19 @@ async function createConfigStore() {
 
 		getListingLoadingMessage: () => {
 			return searchRequest.configMap.LISTING_LOADING_MESSAGE;
+		},
+		showWallet: () => {
+			return data.categorySdkConfig.walletEnabled;
+		},
+		showCoupon: () => {
+			return data.categorySdkConfig.couponEnabled;
+		},
+		getDefaultPassenger: () => {
+			return {
+				adultCount: searchRequest.adultCount,
+				infantCount: searchRequest.infantCount,
+				childCount: searchRequest.childCount
+			};
 		}
 	};
 }
@@ -232,3 +270,64 @@ const createSearchFlightStore = async () => {
 };
 
 export const searchFlightStore = await createSearchFlightStore();
+
+function createSearchFlightsParamsStore() {
+	const { subscribe, set, update } = writable<FlightSearchRequest>({
+		src: configStore.getSrc(),
+		des: configStore.getDest(),
+		departDate: configStore.getDepartDate().format('YYYY-MM-DD'),
+		partnerCountry: configStore.getPartnerCountry(),
+		passenger: {
+			adultCount: 1,
+			infantCount: 0,
+			childCount: 0
+		},
+		travellerClass: configStore.getDefaultTravellerClass(),
+		appliedSortFilter: [configStore.getDefaultSortFilter()]
+	});
+	return {
+		subscribe,
+		set,
+		update,
+		getSelectedCities: () => {
+			return {
+				src: get(searchFlightsParamsStore).src,
+				des: get(searchFlightsParamsStore).des
+			};
+		},
+		getDepartDate: () => {
+			return get(searchFlightsParamsStore).departDate;
+		},
+		getPassenger: () => {
+			return get(searchFlightsParamsStore).passenger;
+		},
+		getTravellerClass: () => {
+			return get(searchFlightsParamsStore).travellerClass;
+		},
+		getAppliedSortFilter: () => {
+			return get(searchFlightsParamsStore).appliedSortFilter;
+		},
+		setSrc: (src: City) => {
+			update((state) => {
+				state.src = src;
+				return state;
+			});
+		},
+		setDes: (des: City) => {
+			update((state) => {
+				state.des = des;
+				return state;
+			});
+		},
+		exchangeCities: () => {
+			update((state) => {
+				const temp = state.src;
+				state.src = state.des;
+				state.des = temp;
+				return state;
+			});
+		}
+	};
+}
+
+export const searchFlightsParamsStore = createSearchFlightsParamsStore();

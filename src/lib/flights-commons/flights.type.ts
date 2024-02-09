@@ -5,7 +5,7 @@ type Status = {
 	responseMessage: string;
 };
 
-type Location = {
+export type City = {
 	iataCode: string;
 	city: string;
 	countryCode: string;
@@ -42,15 +42,15 @@ type Filter = {
 	appliedFilterValueList: FilterValueList;
 };
 
-type DefaultSortFilter = {
+type AppliedSortFilter = {
 	tabId: string;
 	sortId: string;
 	filtersList: Filter[];
 };
 
 type SearchRequest = {
-	src: Location;
-	des: Location;
+	src: City;
+	des: City;
 	travellerClass: string;
 	departDate: string;
 	returnDate: string;
@@ -63,7 +63,7 @@ type SearchRequest = {
 	configMap: ConfigMap;
 	travellers: Traveller[];
 	guests: Guest[];
-	defaultSortFilter: DefaultSortFilter;
+	defaultSortFilter: AppliedSortFilter;
 };
 
 type Payload = {
@@ -143,15 +143,9 @@ type TravellerClass = {
 	value: string;
 };
 
-type AppliedSortFilter = {
-	tabId: string;
-	sortId: string;
-	filtersList: Filter[];
-};
-
 export type FlightSearchRequest = {
-	src: Location;
-	des: Location;
+	src: City;
+	des: City;
 	departDate: string;
 	partnerCountry: string;
 	passenger: Passenger;
