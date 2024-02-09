@@ -10,7 +10,9 @@
 		src = [$searchFlightsParamsStore.src];
 		des = [$searchFlightsParamsStore.des];
 	}
+
 	let exchangeBtn: HTMLButtonElement;
+
 	function handleExchange(e: MouseEvent) {
 		searchFlightsParamsStore.exchangeCities();
 		console.log('exchange cities', e);
@@ -35,7 +37,6 @@
 	</div>
 	<div class="flex flex-col w-full justify-between gap-2">
 		<CityWithCodeTag type={'src'} city={src} />
-
 		<span class="w-full border border-spacing-4 border-dashed border-base-300" />
 		<CityWithCodeTag type="dest" city={des} />
 	</div>

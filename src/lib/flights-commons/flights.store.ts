@@ -34,6 +34,7 @@ const createLoadingStore = () => {
 };
 
 export const loadingStore = createLoadingStore();
+
 async function createConfigStore() {
 	const data: ConfigResponse = await catchError(getConfig);
 	const { subscribe, set, update } = writable<ConfigResponse>(data);
@@ -330,6 +331,18 @@ function createSearchFlightsParamsStore() {
 		setDepartDate: (departDate: string) => {
 			update((state) => {
 				state.departDate = departDate;
+				return state;
+			});
+		},
+		setPassenger: (passenger: { adultCount: number; infantCount: number; childCount: number }) => {
+			update((state) => {
+				state.passenger = passenger;
+				return state;
+			});
+		},
+		setTravellerClass: (travellerClass: { key: string; value: string }) => {
+			update((state) => {
+				state.travellerClass = travellerClass;
 				return state;
 			});
 		}

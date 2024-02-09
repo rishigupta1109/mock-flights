@@ -1,10 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import {
-		popularCitiesStore,
-		searchFlightStore,
-		searchFlightsParamsStore
-	} from '$lib/flights-commons/flights.store';
+	import { popularCitiesStore, searchFlightsParamsStore } from '$lib/flights-commons/flights.store';
 	import type { Airport } from '$lib/flights-commons/flights.type';
 	import CrossIcon from '$lib/icons/crossIcon.svelte';
 	import SearchIcon from '$lib/icons/searchIcon.svelte';

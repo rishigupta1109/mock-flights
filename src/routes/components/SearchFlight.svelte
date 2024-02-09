@@ -1,10 +1,14 @@
 <script lang="ts">
-	import { configStore } from '$lib/flights-commons/flights.store';
+	import { configStore, searchFlightsParamsStore } from '$lib/flights-commons/flights.store';
 	import FlightRouteDisplay from './FlightRouteDisplay.svelte';
 	import SelectDates from './SelectDates.svelte';
 	import SelectTravellerNClass from './SelectTravellerNClass.svelte';
 
 	let checked = configStore.getNonStopFlightLanding();
+
+	function searchFlightHandler() {
+		console.log('search flight', $searchFlightsParamsStore);
+	}
 </script>
 
 <FlightRouteDisplay />
@@ -24,6 +28,10 @@
 	<p class="base-content-light text-sm">Show only non-stop flights</p>
 </div>
 
-<button class="btn btn-success text-base-200 w-full" data-testid="search-flight">
+<button
+	on:click={searchFlightHandler}
+	class="btn btn-success text-base-200 w-full"
+	data-testid="search-flight"
+>
 	Search Flights
 </button>

@@ -17,12 +17,12 @@ type ConfigMap = {
 	[key: string]: string;
 };
 
-type Traveller = {
+export type Traveller = {
 	key: string;
 	value: string;
 };
 
-type Guest = {
+export type Guest = {
 	guestType: string;
 	textName: string;
 	subTextName: string;
@@ -31,6 +31,7 @@ type Guest = {
 	maxValue: number;
 	displayOrder: number;
 	errorMessage: string;
+	value?: number;
 };
 
 type FilterValueList = {

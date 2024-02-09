@@ -2,14 +2,21 @@
 	import DuoCard from '$lib/components/DuoCard.svelte';
 	import { searchFlightsParamsStore } from '$lib/flights-commons/flights.store';
 	import DownArrowHalf from '$lib/icons/downArrowHalf.svelte';
+	import SelectTravellerModal from './SelectTravellerModal.svelte';
 
-	const passengerCount =
+	$: passengerCount =
 		$searchFlightsParamsStore.passenger.adultCount +
 		$searchFlightsParamsStore.passenger.childCount +
 		$searchFlightsParamsStore.passenger.infantCount;
+	$: console.log($searchFlightsParamsStore);
+	let openModal = false;
 </script>
 
-<DuoCard>
+<DuoCard
+	on:click={() => {
+		openModal = true;
+	}}
+>
 	<div slot="left" class="flex w-[45%] flex-col p-2">
 		<span class="card-content base-content-light">Class</span>
 		<span class="card-sub-heading flex gap-4 items-center justify-start">
@@ -26,3 +33,5 @@
 		</span>
 	</div>
 </DuoCard>
+
+<SelectTravellerModal bind:open={openModal} />

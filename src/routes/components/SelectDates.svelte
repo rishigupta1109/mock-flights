@@ -4,30 +4,18 @@
 	import { Datepicker } from 'svelte-calendar';
 	import dayjs from 'dayjs';
 	import { searchFlightsParamsStore } from '$lib/flights-commons/flights.store';
-	import { onMount } from 'svelte';
 
 	let departureDate: any;
 	let returnDate: any;
-	// $: console.log('departureDate', $searchFlightsParamsStore.departDate, departDate);
-	$: console.log($searchFlightsParamsStore.departDate);
-	let departDate = new Date(parseInt($searchFlightsParamsStore.departDate));
-	console.log(
-		departDate,
-		$searchFlightsParamsStore.departDate,
-		new Date(parseInt($searchFlightsParamsStore.departDate)),
-		new Date($searchFlightsParamsStore.departDate)
-	);
+
+	let departDate = dayjs(parseInt($searchFlightsParamsStore.departDate)).toDate();
+
 	$: {
-		console.log(departDate, $searchFlightsParamsStore, !isNaN(departDate.getTime()));
 		if (!isNaN(departDate.getTime()))
 			searchFlightsParamsStore.setDepartDate(departDate.getTime().toString());
-		else departDate = new Date(parseInt($searchFlightsParamsStore.departDate));
-		console.log(
-			departDate,
-			$searchFlightsParamsStore,
-			new Date(parseInt($searchFlightsParamsStore.departDate))
-		);
+		else departDate = dayjs(parseInt($searchFlightsParamsStore.departDate)).toDate();
 	}
+
 	let theme = {
 		calendar: {
 			height: '100vh'
