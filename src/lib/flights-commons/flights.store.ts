@@ -43,7 +43,7 @@ async function createConfigStore() {
 		set,
 		update,
 		getDepartDate: () => {
-			return dayjs(parseInt(searchRequest.departDate) * 1);
+			return searchRequest.departDate;
 		},
 		getDest: () => {
 			return searchRequest.des;
@@ -275,7 +275,7 @@ function createSearchFlightsParamsStore() {
 	const { subscribe, set, update } = writable<FlightSearchRequest>({
 		src: configStore.getSrc(),
 		des: configStore.getDest(),
-		departDate: configStore.getDepartDate().format('YYYY-MM-DD'),
+		departDate: configStore.getDepartDate(),
 		partnerCountry: configStore.getPartnerCountry(),
 		passenger: {
 			adultCount: 1,
@@ -296,7 +296,7 @@ function createSearchFlightsParamsStore() {
 			};
 		},
 		getDepartDate: () => {
-			return get(searchFlightsParamsStore).departDate;
+			return dayjs(get(searchFlightsParamsStore).departDate);
 		},
 		getPassenger: () => {
 			return get(searchFlightsParamsStore).passenger;
@@ -324,6 +324,12 @@ function createSearchFlightsParamsStore() {
 				const temp = state.src;
 				state.src = state.des;
 				state.des = temp;
+				return state;
+			});
+		},
+		setDepartDate: (departDate: string) => {
+			update((state) => {
+				state.departDate = departDate;
 				return state;
 			});
 		}

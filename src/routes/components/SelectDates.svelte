@@ -3,10 +3,31 @@
 	import AddIcon from '$lib/icons/addIcon.svelte';
 	import { Datepicker } from 'svelte-calendar';
 	import dayjs from 'dayjs';
+	import { searchFlightsParamsStore } from '$lib/flights-commons/flights.store';
+	import { onMount } from 'svelte';
 
 	let departureDate: any;
 	let returnDate: any;
-
+	// $: console.log('departureDate', $searchFlightsParamsStore.departDate, departDate);
+	$: console.log($searchFlightsParamsStore.departDate);
+	let departDate = new Date(parseInt($searchFlightsParamsStore.departDate));
+	console.log(
+		departDate,
+		$searchFlightsParamsStore.departDate,
+		new Date(parseInt($searchFlightsParamsStore.departDate)),
+		new Date($searchFlightsParamsStore.departDate)
+	);
+	$: {
+		console.log(departDate, $searchFlightsParamsStore, !isNaN(departDate.getTime()));
+		if (!isNaN(departDate.getTime()))
+			searchFlightsParamsStore.setDepartDate(departDate.getTime().toString());
+		else departDate = new Date(parseInt($searchFlightsParamsStore.departDate));
+		console.log(
+			departDate,
+			$searchFlightsParamsStore,
+			new Date(parseInt($searchFlightsParamsStore.departDate))
+		);
+	}
 	let theme = {
 		calendar: {
 			height: '100vh'
@@ -16,19 +37,20 @@
 
 <DuoCard>
 	<div slot="left" class="flex w-[45%] flex-col p-2 cursor-pointer">
-		<Datepicker bind:store={departureDate} let:key let:send let:receive {theme}>
+		<Datepicker
+			bind:store={departureDate}
+			bind:selected={departDate}
+			let:key
+			let:send
+			let:receive
+			{theme}
+		>
 			<button class="flex flex-col w-full" in:receive|local={{ key }} out:send|local={{ key }}>
-				{#if $departureDate?.hasChosen}
-					<span class="card-content base-content-light">Departure</span>
-					<span class="card-sub-heading">{dayjs($departureDate.selected).format('D MMM')}</span>
-					<span class="card-content base-content-light">
-						{dayjs($departureDate.selected).format('dddd')}
-					</span>
-				{:else}
-					<span class="card-content base-content-light">Departure</span>
-					<span class="card-sub-heading">Select Date</span>
-					<span class="card-content base-content-light"></span>
-				{/if}
+				<span class="card-content base-content-light">Departure</span>
+				<span class="card-sub-heading">{dayjs($departureDate?.selected).format('D MMM')}</span>
+				<span class="card-content base-content-light">
+					{dayjs($departureDate?.selected).format('dddd')}
+				</span>
 			</button>
 		</Datepicker>
 	</div>

@@ -1,4 +1,11 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import {
+		popularCitiesStore,
+		searchFlightStore,
+		searchFlightsParamsStore
+	} from '$lib/flights-commons/flights.store';
+	import type { Airport } from '$lib/flights-commons/flights.type';
 	import CrossIcon from '$lib/icons/crossIcon.svelte';
 	import SearchIcon from '$lib/icons/searchIcon.svelte';
 	import CityList from './components/CityList.svelte';
@@ -10,6 +17,19 @@
 	};
 	let { title, variable } = data;
 	let city: string = '';
+	const popularCities: Airport[] = popularCitiesStore.getPopularCities();
+
+	function clickHandler(e: CustomEvent<{ city: Airport }>) {
+		const city = e.detail.city;
+		if (variable === 'src') {
+			if ($searchFlightsParamsStore.des.iataCode === city.iataCode) return;
+			searchFlightsParamsStore.setSrc(city);
+		} else {
+			if ($searchFlightsParamsStore.src.iataCode === city.iataCode) return;
+			searchFlightsParamsStore.setDes(city);
+		}
+		goto('/');
+	}
 </script>
 
 <NavHeader {title} />
@@ -31,8 +51,8 @@
 	</span>
 </div>
 {#if city.trim() === ''}
-	<CityList title="Recent Searches" isRecent={true} />
-	<CityList title="Popular Cities" />
+	<CityList on:click={clickHandler} title="Recent Searches" isRecent={true} />
+	<CityList on:click={clickHandler} title="Popular Cities" cities={popularCities} />
 {:else}
-	<CityList title="Search Results" />
+	<CityList on:click={clickHandler} title="Search Results" />
 {/if}

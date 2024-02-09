@@ -116,7 +116,7 @@ export type WalletResponse = {
 //Popular Cities Types
 //Search City Types
 
-type Airport = {
+export type Airport = {
 	iataCode: string;
 	city: string;
 	name: string;
