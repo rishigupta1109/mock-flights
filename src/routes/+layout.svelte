@@ -1,6 +1,9 @@
 <script lang="ts">
 	import 'tailwindcss/tailwind.css';
 	import '../global.css';
+	import dayjs from 'dayjs';
+	import customParseFormat from 'dayjs/plugin/customParseFormat';
+	dayjs.extend(customParseFormat);
 </script>
 
 <div class="bg-base-100 min-h-screen text-white">

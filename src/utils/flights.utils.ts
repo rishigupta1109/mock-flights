@@ -29,3 +29,8 @@ export const [send, receive] = crossfade({
 		};
 	}
 });
+
+export function getRGBColor(color: { red: number; green: number; blue: number }) {
+	if (!color) return false;
+	return `[rgb(${color.red}, ${color.green}, ${color.blue})]`;
+}

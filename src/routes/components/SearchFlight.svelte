@@ -1,5 +1,10 @@
 <script lang="ts">
-	import { configStore, searchFlightsParamsStore } from '$lib/flights-commons/flights.store';
+	import { goto } from '$app/navigation';
+	import {
+		configStore,
+		searchFlightsParamsStore,
+		stateStore
+	} from '$lib/flights-commons/flights.store';
 	import FlightRouteDisplay from './FlightRouteDisplay.svelte';
 	import SelectDates from './SelectDates.svelte';
 	import SelectTravellerNClass from './SelectTravellerNClass.svelte';
@@ -7,7 +12,9 @@
 	let checked = configStore.getNonStopFlightLanding();
 
 	function searchFlightHandler() {
-		console.log('search flight', $searchFlightsParamsStore);
+		let str = JSON.stringify($searchFlightsParamsStore);
+		goto(`/flights/search?obj=${str}`);
+		stateStore.closeModifySearchModal();
 	}
 </script>
 

@@ -273,10 +273,11 @@ const createSearchFlightStore = async () => {
 export const searchFlightStore = await createSearchFlightStore();
 
 function createSearchFlightsParamsStore() {
+	console.log(dayjs(new Date(parseInt(configStore.getDepartDate()))).format('DD-MM-YYYY'));
 	const { subscribe, set, update } = writable<FlightSearchRequest>({
 		src: configStore.getSrc(),
 		des: configStore.getDest(),
-		departDate: configStore.getDepartDate(),
+		departDate: dayjs(new Date(parseInt(configStore.getDepartDate()))).format('DD-MM-YYYY'),
 		partnerCountry: configStore.getPartnerCountry(),
 		passenger: {
 			adultCount: 1,
@@ -350,3 +351,32 @@ function createSearchFlightsParamsStore() {
 }
 
 export const searchFlightsParamsStore = createSearchFlightsParamsStore();
+
+function createStateStore() {
+	const { set, subscribe, update } = writable({
+		isModifySearchModalOpen: false
+	});
+	return {
+		set,
+		subscribe,
+		update,
+		openModifySearchModal: () => {
+			update((state) => {
+				return {
+					...state,
+					isModifySearchModalOpen: true
+				};
+			});
+		},
+		closeModifySearchModal: () => {
+			update((state) => {
+				return {
+					...state,
+					isModifySearchModalOpen: false
+				};
+			});
+		}
+	};
+}
+
+export const stateStore = createStateStore();

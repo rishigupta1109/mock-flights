@@ -147,7 +147,7 @@ type TravellerClass = {
 export type FlightSearchRequest = {
 	src: City;
 	des: City;
-	departDate: string;
+	departDate: string; //DD-MM-YYYY
 	partnerCountry: string;
 	passenger: Passenger;
 	travellerClass: TravellerClass;
@@ -184,7 +184,7 @@ type ErrorHandlingDetail = {
 	bottomOverlayError: BottomOverlayError;
 	extraInfo: Record<string, unknown>;
 };
-type FlightSegment = {
+export type FlightSegment = {
 	segmentId: string;
 	onwardSegmentDetails: {
 		arrivalTime: string;

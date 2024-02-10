@@ -24,7 +24,7 @@
 			if ($searchFlightsParamsStore.src.iataCode === city.iataCode) return;
 			searchFlightsParamsStore.setDes(city);
 		}
-		goto('/');
+		if (typeof window !== 'undefined') window.history.back();
 	}
 </script>
 
