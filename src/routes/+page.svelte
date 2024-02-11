@@ -4,12 +4,16 @@
 	import RecentSearches from './components/RecentSearches.svelte';
 	import SearchFlight from './components/SearchFlight.svelte';
 	import UpcomingFlights from './components/UpcomingFlights.svelte';
+	import { loadingStore } from '$lib/flights-commons/flights.store';
 </script>
 
-<NavbarHeader />
-<div class="flex flex-col p-4 gap-4">
-	<SearchFlight />
-	<UpcomingFlights />
-	<RecentSearches />
-</div>
-<Loading />
+{#if $loadingStore}
+	<Loading />
+{:else}
+	<NavbarHeader />
+	<div class="flex flex-col p-4 gap-4">
+		<SearchFlight />
+		<UpcomingFlights />
+		<RecentSearches />
+	</div>
+{/if}

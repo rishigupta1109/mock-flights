@@ -16,20 +16,19 @@
 		console.log(fareElement);
 		fareElement.style.color = fareColor;
 	}
-	console.log('fareColor', fareColor);
 </script>
 
 <div class="flex flex-col gap-2 p-4 text-base-content border-t border-t-base-300">
 	<div class="flex justify-between items-start">
-		<span class="flex flex-col gap-1">
+		<span class="flex flex-col gap-1 w-1/3">
 			<img src={airlineIconUrl} alt="airline" class="w-12 h-12" />
 			<span class="text-sm">{airlineName}</span>
 		</span>
-		<span class="flex flex-col">
+		<span class="flex flex-col w-1/3">
 			<span class="heading-1">{timeFrame}</span>
 			<span class="text-sm">{duration}</span>
 		</span>
-		<span>
+		<span class="w-1/3 flex justify-end">
 			<span bind:this={fareElement} class="heading-1 text-{fareColor}">{fare}</span>
 		</span>
 	</div>

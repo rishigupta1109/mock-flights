@@ -1,7 +1,15 @@
 <script lang="ts">
-	import RightArrow from '$lib/icons/rightArrow.svelte';
+	import type { UpcomingBooking } from '$lib/flights-commons/flights.type';
+	import RecentIcon from '$lib/icons/recentIcon.svelte';
 	import RightArrowHalf from '$lib/icons/rightArrowHalf.svelte';
-	export let item: any;
+	export let item: UpcomingBooking = {
+		title: 'title',
+		subtitle: 'subtitle',
+		thirdTitle: 'thirdTitle',
+		imageUrl: 'imageUrl',
+		id: 'id',
+		ctaButton: []
+	};
 	export let isRecent: boolean;
 </script>
 
@@ -9,20 +17,18 @@
 	<div class="flex justify-between items-center gap-4 w-9/10">
 		<span class="w-2/5 flex justify-center items-center">
 			{#if isRecent}
-				<svelte:component this={item.icon} class="h-14" />
+				<svelte:component this={RecentIcon} />
 			{:else}
-				<img src={item.image} alt="flight" class="rounded-md aspect-square h-14" />
+				<img src={item.imageUrl} alt="flight" class="rounded-md aspect-square h-14" />
 			{/if}
 		</span>
-		<div class="flex w-3/5 flex-col text-black">
-			<p class="flex items-center w-full whitespace-nowrap gap-1">
-				{item.source}
-				<RightArrow color="black" testId="arrow" />
-				{item.destination}
+		<div class="flex w-3/5 flex-col text-black gap-1">
+			<p class="w-full whitespace-nowrap">
+				{item.title}
 			</p>
-			<p class="text-xs base-content-light">{item.date}</p>
+			<p class="text-xs base-content-light">{item.subtitle}</p>
 			{#if !isRecent}
-				<p class="text-xs">{item.traveller} Traveller | {item.class}</p>
+				<p class="text-xs">{item.thirdTitle}</p>
 			{/if}
 		</div>
 	</div>

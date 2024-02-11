@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import {
 		configStore,
+		searchFlightStore,
 		searchFlightsParamsStore,
 		stateStore
 	} from '$lib/flights-commons/flights.store';
@@ -14,6 +15,7 @@
 	function searchFlightHandler() {
 		let str = JSON.stringify($searchFlightsParamsStore);
 		goto(`/flights/search?obj=${str}`);
+		searchFlightStore.searchFlight($searchFlightsParamsStore);
 		stateStore.closeModifySearchModal();
 	}
 </script>

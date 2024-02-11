@@ -13,10 +13,12 @@
 	import ModifySearchModal from './components/ModifySearchModal.svelte';
 
 	onMount(() => {
+		console.log('Mounted');
 		const query = new URLSearchParams(window.location.search);
 		const searchParam = query.get('obj') ? JSON.parse(query.get('obj') as string) : {};
 		console.log('searchParam', searchParam);
-		searchFlightStore.searchFlight(searchParam as FlightSearchRequest);
+		if (!$stateStore.isModifySearchModalOpen)
+			searchFlightStore.searchFlight(searchParam as FlightSearchRequest);
 		if (!$stateStore.isModifySearchModalOpen) searchFlightsParamsStore.set(searchParam);
 		console.log('searchParam', searchParam, $searchFlightStore);
 	});

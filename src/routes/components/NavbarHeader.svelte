@@ -5,14 +5,21 @@
 	import Navbar from '$lib/components/Navbar.svelte';
 	import { getFormattedWallet } from '../../utils/flights.utils';
 	import { configStore, walletStore } from '$lib/flights-commons/flights.store';
+	import { onMount } from 'svelte';
+	let wallet = 0;
+	let currencySymbol = '';
+	let showWallet = false;
+	let showCoupon = false;
 
-	export let wallet = walletStore.getTotalBalance();
-	let currencySymbol = walletStore.getCurrencySymbol();
-	let showWallet = configStore.showWallet();
-	let showCoupon = configStore.showCoupon();
+	onMount(() => {
+		wallet = walletStore.getTotalBalance();
+		currencySymbol = walletStore.getCurrencySymbol();
+		showWallet = configStore.showWallet();
+		showCoupon = configStore.showCoupon();
+	});
 </script>
 
-<Navbar>
+<Navbar back="/">
 	<p class="heading-1">Flights</p>
 	<div class="flex justify-between items-stretch gap-4 ml-auto">
 		{#if showWallet}

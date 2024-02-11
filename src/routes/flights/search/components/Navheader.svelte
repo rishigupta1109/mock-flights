@@ -14,7 +14,7 @@
 	console.log(departDate);
 </script>
 
-<Navbar>
+<Navbar back={'/'}>
 	<div class="flex justify-between items-center w-full">
 		<div class="flex flex-col p-2">
 			<span class="flex heading-1">

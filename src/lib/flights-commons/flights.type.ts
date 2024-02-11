@@ -114,6 +114,19 @@ export type WalletResponse = {
 
 //Upcoming Booking Types
 
+export type UpcomingBooking = {
+	id: string;
+	title: string;
+	subtitle: string;
+	thirdTitle: string;
+	imageUrl: string;
+	ctaButton: CtaButton[];
+};
+
+export type UpcomingBookingResponse = {
+	booking: UpcomingBooking[];
+	totalRecords: number;
+};
 //Popular Cities Types
 //Search City Types
 

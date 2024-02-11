@@ -2,11 +2,14 @@
 	import CrossIcon from '$lib/icons/crossIcon.svelte';
 	import { type Guest, type Traveller } from '$lib/flights-commons/flights.type';
 	import { configStore, searchFlightsParamsStore } from '$lib/flights-commons/flights.store';
+	import { getCountFromGuestType } from '../../utils/flights.utils';
 	export let open: boolean = false;
-	let guests: Guest[] = configStore.getGuests().map((guest) => {
+	$: passengersValues = $searchFlightsParamsStore.passenger;
+
+	$: guests = configStore.getGuests().map((guest) => {
 		return {
 			...guest,
-			value: guest.defaultValue
+			value: getCountFromGuestType(guest.guestType, passengersValues)
 		};
 	});
 	let travellers: Traveller[] = configStore.getTravellerClasses();

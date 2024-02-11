@@ -3,40 +3,28 @@
 	import Carousel from './Carousel.svelte';
 	let items = [
 		{
-			image: './recentIcon.svg',
-			source: 'New Delhi',
-			destination: 'Mumbai',
-			date: 'Mon,July 12',
-			traveller: '1',
-			class: 'Economy',
-			icon: RecentIcon
+			title: 'New Delhi → Bangalore',
+			subtitle: 'Mon, Nov 21',
+			thirdTitle: 'thirdTitle',
+			imageUrl: 'imageUrl',
+			id: 'id',
+			ctaButton: []
 		},
 		{
-			image: './recentIcon.svg',
-			source: 'New Delhi',
-			destination: 'Mumbai',
-			date: 'Mon,July 12',
-			traveller: '1',
-			class: 'Economy',
-			icon: RecentIcon
+			title: 'New Delhi → Bangalore',
+			subtitle: 'Mon, Nov 21',
+			thirdTitle: 'thirdTitle',
+			imageUrl: 'imageUrl',
+			id: 'id',
+			ctaButton: []
 		},
 		{
-			image: './recentIcon.svg',
-			source: 'New Delhi',
-			destination: 'Mumbai',
-			date: 'Mon,July 12',
-			traveller: '1',
-			class: 'Economy',
-			icon: RecentIcon
-		},
-		{
-			image: './recentIcon.svg',
-			source: 'New Delhi',
-			destination: 'Mumbai',
-			date: 'Mon,July 12',
-			traveller: '1',
-			class: 'Economy',
-			icon: RecentIcon
+			title: 'New Delhi → Bangalore',
+			subtitle: 'Mon, Nov 21',
+			thirdTitle: 'thirdTitle',
+			imageUrl: 'imageUrl',
+			id: 'id',
+			ctaButton: []
 		}
 	];
 </script>
