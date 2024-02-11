@@ -1,6 +1,8 @@
 <script>
+	import { upcomingBookingStore } from '$lib/flights-commons/flights.store';
 	import RightArrowHalf from '$lib/icons/rightArrowHalf.svelte';
 	import Carousel from './Carousel.svelte';
+	$: upcomingFlights = $upcomingBookingStore.booking;
 </script>
 
 <div class="w-full flex flex-col">
@@ -13,5 +15,5 @@
 			<span class="badge badge-error text-base-200">new</span> Web Check-in
 		</p>
 	</span>
-	<Carousel isRecent={false} />
+	<Carousel items={upcomingFlights} isRecent={false} />
 </div>

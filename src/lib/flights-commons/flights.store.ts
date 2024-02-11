@@ -7,19 +7,20 @@ import {
 	getWallet,
 	searchFlight
 } from './flights.api';
-import type {
-	AirportListResponse,
-	City,
-	ConfigResponse,
-	FlightSearchRequest,
-	FlightSearchResponse,
-	WalletResponse
+import {
+	type UpcomingBookingResponse,
+	type AirportListResponse,
+	type City,
+	type ConfigResponse,
+	type FlightSearchRequest,
+	type FlightSearchResponse,
+	type WalletResponse
 } from './flights.type';
 import dayjs from 'dayjs';
 import { catchError } from '../../utils/flights.utils';
 
 const createLoadingStore = () => {
-	const { subscribe, set, update } = writable(false);
+	const { subscribe, set, update } = writable(true);
 	return {
 		subscribe,
 		set,
@@ -35,204 +36,238 @@ const createLoadingStore = () => {
 
 export const loadingStore = createLoadingStore();
 
-async function createConfigStore() {
-	const data: ConfigResponse = await catchError(getConfig);
-	const { subscribe, set, update } = writable<ConfigResponse>(data);
-	const searchRequest = data.searchRequest;
+function createConfigStore() {
+	const { subscribe, set, update } = writable<ConfigResponse>();
+
 	return {
 		subscribe,
 		set,
 		update,
-		getDepartDate: () => {
-			return searchRequest.departDate;
-		},
-		getDest: () => {
-			return searchRequest.des;
-		},
-		getSrc: () => {
-			return searchRequest.src;
-		},
-		getReturnDate: () => {
-			return dayjs(parseInt(searchRequest.returnDate) * 1);
-		},
-		getTravellersCount: () => {
-			const { adultCount, childCount, infantCount } = searchRequest;
-			return adultCount + childCount + infantCount;
-		},
-		isRoundTrip: () => {
-			return searchRequest.isRoundTrip;
-		},
-		getPartnerCountry: () => {
-			return searchRequest.partnerCountry;
-		},
-		getPartnerCurrency: () => {
-			return searchRequest.partnerCurrency;
-		},
-		getDefaultTravellerClass: () => {
-			let travellerClass = searchRequest.travellerClass.toLocaleUpperCase();
-			let travellerClassObj = searchRequest.travellers.find(
+		fetchConfig: async () => {
+			const data: ConfigResponse = await catchError(getConfig);
+			set(data);
+			let travellerClass = data.searchRequest.travellerClass.toLocaleUpperCase();
+			let travellerClassObj = get(configStore).searchRequest.travellers.find(
 				(traveller) => traveller.key === travellerClass
 			);
 			if (travellerClassObj === undefined) {
-				travellerClassObj = searchRequest.travellers[0];
+				travellerClassObj = get(configStore).searchRequest.travellers[0];
+			}
+			const departDate = dayjs(new Date(parseInt(data.searchRequest.departDate))).format(
+				'DD-MM-YYYY'
+			);
+			searchFlightsParamsStore.set({
+				src: data.searchRequest.src,
+				des: data.searchRequest.des,
+				departDate: departDate,
+				passenger: {
+					adultCount: data.searchRequest.adultCount,
+					infantCount: data.searchRequest.infantCount,
+					childCount: data.searchRequest.childCount
+				},
+				travellerClass: travellerClassObj,
+				appliedSortFilter: [data.searchRequest.defaultSortFilter],
+				partnerCountry: data.searchRequest.partnerCountry
+			});
+		},
+		getDepartDate: () => {
+			return get(configStore).searchRequest.departDate;
+		},
+		getDest: () => {
+			return get(configStore).searchRequest.des;
+		},
+		getSrc: () => {
+			return get(configStore).searchRequest.src;
+		},
+		getReturnDate: () => {
+			return dayjs(parseInt(get(configStore).searchRequest.returnDate) * 1);
+		},
+		getTravellersCount: () => {
+			const { adultCount, childCount, infantCount } = get(configStore).searchRequest;
+			return adultCount + childCount + infantCount;
+		},
+		isRoundTrip: () => {
+			return get(configStore).searchRequest.isRoundTrip;
+		},
+		getPartnerCountry: () => {
+			return get(configStore).searchRequest.partnerCountry;
+		},
+		getPartnerCurrency: () => {
+			return get(configStore).searchRequest.partnerCurrency;
+		},
+		getDefaultTravellerClass: () => {
+			let travellerClass = get(configStore).searchRequest.travellerClass.toLocaleUpperCase();
+			let travellerClassObj = get(configStore).searchRequest.travellers.find(
+				(traveller) => traveller.key === travellerClass
+			);
+			if (travellerClassObj === undefined) {
+				travellerClassObj = get(configStore).searchRequest.travellers[0];
 			}
 
 			return travellerClassObj;
 		},
 		getGuests: () => {
-			return searchRequest.guests;
+			return get(configStore).searchRequest.guests;
 		},
 		getTravellerClasses: () => {
-			return searchRequest.travellers;
+			return get(configStore).searchRequest.travellers;
 		},
 		getDefaultSortFilter: () => {
-			return searchRequest.defaultSortFilter;
+			return get(configStore).searchRequest.defaultSortFilter;
 		},
 		getMinTotalGuest: () => {
-			return searchRequest.configMap.MIN_TOTAL_GUEST;
+			return get(configStore).searchRequest.configMap.MIN_TOTAL_GUEST;
 		},
 
 		getListingDaysTillEndDate: () => {
-			return searchRequest.configMap.LISTING_DAYS_TILL_END_DATE;
+			return get(configStore).searchRequest.configMap.LISTING_DAYS_TILL_END_DATE;
 		},
 
 		getNonStopFlightLanding: () => {
-			return searchRequest.configMap.NON_STOP_FLIGHT_LANDING === 'true';
+			return get(configStore).searchRequest.configMap.NON_STOP_FLIGHT_LANDING === 'true';
 		},
 
 		getMaxTotalGuest: () => {
-			return searchRequest.configMap.MAX_TOTAL_GUEST;
+			return get(configStore).searchRequest.configMap.MAX_TOTAL_GUEST;
 		},
 
 		getListingDaysFromStartDate: () => {
-			return searchRequest.configMap.LISTING_DAYS_FROM_START_DATE;
+			return get(configStore).searchRequest.configMap.LISTING_DAYS_FROM_START_DATE;
 		},
 
 		getCachingTimeInMillisecond: () => {
-			return searchRequest.configMap.CACHING_TIME_IN_MILLISECOND;
+			return get(configStore).searchRequest.configMap.CACHING_TIME_IN_MILLISECOND;
 		},
 
 		getSearchCityRegex: () => {
-			return searchRequest.configMap.SEARCH_CITY_REGEX;
+			return get(configStore).searchRequest.configMap.SEARCH_CITY_REGEX;
 		},
 
 		getLandingDaysFromStartDate: () => {
-			return searchRequest.configMap.LANDING_DAYS_FROM_START_DATE;
+			return get(configStore).searchRequest.configMap.LANDING_DAYS_FROM_START_DATE;
 		},
 
 		getPassportNumberRegex: () => {
-			return searchRequest.configMap.PASSPORT_NUMBER_REGEX;
+			return get(configStore).searchRequest.configMap.PASSPORT_NUMBER_REGEX;
 		},
 
 		getOnwardNumberOfStopFilterId: () => {
-			return searchRequest.configMap.ONWARD_NUMBER_OF_STOP_FILTER_ID;
+			return get(configStore).searchRequest.configMap.ONWARD_NUMBER_OF_STOP_FILTER_ID;
 		},
 
 		getMaxCalenderDays: () => {
-			return searchRequest.configMap.MAX_CALENDER_DAYS;
+			return get(configStore).searchRequest.configMap.MAX_CALENDER_DAYS;
 		},
 
 		getSearchCityRegexErrorMessage: () => {
-			return searchRequest.configMap.SEARCH_CITY_REGEX_ERROR_MESSAGE;
+			return get(configStore).searchRequest.configMap.SEARCH_CITY_REGEX_ERROR_MESSAGE;
 		},
 
 		getGstEnabled: () => {
-			return searchRequest.configMap.GST_ENABLED === 'true';
+			return get(configStore).searchRequest.configMap.GST_ENABLED === 'true';
 		},
 
 		getLandingDaysTillEndDate: () => {
-			return searchRequest.configMap.LANDING_DAYS_TILL_END_DATE;
+			return get(configStore).searchRequest.configMap.LANDING_DAYS_TILL_END_DATE;
 		},
 
 		getPassportDateMaxYears: () => {
-			return searchRequest.configMap.PASSPORT_DATE_MAX_YEARS;
+			return get(configStore).searchRequest.configMap.PASSPORT_DATE_MAX_YEARS;
 		},
 
 		getReturnNumberOfStopFilterId: () => {
-			return searchRequest.configMap.RETURN_NUMBER_OF_STOP_FILTER_ID;
+			return get(configStore).searchRequest.configMap.RETURN_NUMBER_OF_STOP_FILTER_ID;
 		},
 
 		getBookingResultPerPage: () => {
-			return searchRequest.configMap.BOOKING_RESULT_PER_PAGE;
+			return get(configStore).searchRequest.configMap.BOOKING_RESULT_PER_PAGE;
 		},
 
 		getNonStopFlightFilterId: () => {
-			return searchRequest.configMap.NON_STOP_FLIGHT_FILTER_ID;
+			return get(configStore).searchRequest.configMap.NON_STOP_FLIGHT_FILTER_ID;
 		},
 
 		getListingLoadingMessage: () => {
-			return searchRequest.configMap.LISTING_LOADING_MESSAGE;
+			return get(configStore).searchRequest.configMap.LISTING_LOADING_MESSAGE;
 		},
 		showWallet: () => {
-			return data.categorySdkConfig.walletEnabled;
+			return get(configStore).categorySdkConfig.walletEnabled;
 		},
 		showCoupon: () => {
-			return data.categorySdkConfig.couponEnabled;
+			return get(configStore).categorySdkConfig.couponEnabled;
 		},
 		getDefaultPassenger: () => {
 			return {
-				adultCount: searchRequest.adultCount,
-				infantCount: searchRequest.infantCount,
-				childCount: searchRequest.childCount
+				adultCount: get(configStore).searchRequest.adultCount,
+				infantCount: get(configStore).searchRequest.infantCount,
+				childCount: get(configStore).searchRequest.childCount
 			};
 		}
 	};
 }
-export const configStore = await createConfigStore();
+export const configStore = createConfigStore();
 
-const createWalletStore = async () => {
-	const data: WalletResponse = await catchError(getWallet);
-	console.log(data);
-	const walletDetails = data.walletDetails;
-	const { subscribe, set, update } = writable<WalletResponse>(data);
+const createWalletStore = () => {
+	const { subscribe, set, update } = writable<WalletResponse>();
 	return {
 		subscribe,
 		set,
 		update,
+		fetchWallet: async () => {
+			const data: WalletResponse = await catchError(getWallet);
+			console.log(data);
+			set(data);
+		},
 		getTotalBalance: () => {
-			return walletDetails.walletTotalBalance;
+			return get(walletStore).walletDetails.walletTotalBalance;
 		},
 		getCurrencySymbol: () => {
-			return walletDetails.displayInfo.currency_symbol;
+			return get(walletStore).walletDetails.displayInfo.currency_symbol;
 		}
 	};
 };
 
-export const walletStore = await createWalletStore();
+export const walletStore = createWalletStore();
 
-const createUpcomingBookingStore = async () => {
-	const data = await catchError(getUpcomingBookings);
-	console.log(data);
-	const { subscribe, set, update } = writable(data);
+const createUpcomingBookingStore = () => {
+	const { subscribe, set, update } = writable<UpcomingBookingResponse>();
 	return {
 		subscribe,
 		set,
 		update,
+		fetchUpcomingBookings: async () => {
+			const data: UpcomingBookingResponse = await catchError(getUpcomingBookings);
+			console.log(data);
+			set(data);
+		},
 		getUpcomingBookings: () => {
-			return data;
+			return get(upcomingBookingStore);
 		}
 	};
 };
 
-export const upcomingBookingStore = await createUpcomingBookingStore();
+export const upcomingBookingStore = createUpcomingBookingStore();
 
-const createPopularCitiesStore = async () => {
-	const data: AirportListResponse = await catchError(getPopularCities);
-	console.log(data);
-	const { subscribe, set, update } = writable<AirportListResponse>(data);
+const createPopularCitiesStore = () => {
+	const { subscribe, set, update } = writable<AirportListResponse>();
 	return {
 		subscribe,
 		set,
 		update,
+		fetchPopularCities: async () => {
+			const data: AirportListResponse = await catchError(getPopularCities);
+			console.log(data);
+			set(data);
+		},
 		getPopularCities: () => {
-			return data.airportList;
+			return get(popularCitiesStore).airportList;
 		}
 	};
 };
 
-export const popularCitiesStore = await createPopularCitiesStore();
+export const popularCitiesStore = createPopularCitiesStore();
 
-const createSearchCityStore = async () => {
+const createSearchCityStore = () => {
 	const { subscribe, set, update } = writable<AirportListResponse>();
 	return {
 		subscribe,
@@ -250,9 +285,9 @@ const createSearchCityStore = async () => {
 	};
 };
 
-export const searchCityStore = await createSearchCityStore();
+export const searchCityStore = createSearchCityStore();
 
-const createSearchFlightStore = async () => {
+const createSearchFlightStore = () => {
 	const { subscribe, set, update } = writable<FlightSearchResponse>();
 	return {
 		subscribe,
@@ -270,23 +305,10 @@ const createSearchFlightStore = async () => {
 	};
 };
 
-export const searchFlightStore = await createSearchFlightStore();
+export const searchFlightStore = createSearchFlightStore();
 
 function createSearchFlightsParamsStore() {
-	console.log(dayjs(new Date(parseInt(configStore.getDepartDate()))).format('DD-MM-YYYY'));
-	const { subscribe, set, update } = writable<FlightSearchRequest>({
-		src: configStore.getSrc(),
-		des: configStore.getDest(),
-		departDate: dayjs(new Date(parseInt(configStore.getDepartDate()))).format('DD-MM-YYYY'),
-		partnerCountry: configStore.getPartnerCountry(),
-		passenger: {
-			adultCount: 1,
-			infantCount: 0,
-			childCount: 0
-		},
-		travellerClass: configStore.getDefaultTravellerClass(),
-		appliedSortFilter: [configStore.getDefaultSortFilter()]
-	});
+	const { subscribe, set, update } = writable<FlightSearchRequest>();
 	return {
 		subscribe,
 		set,

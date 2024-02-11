@@ -34,3 +34,20 @@ export function getRGBColor(color: { red: number; green: number; blue: number })
 	if (!color) return false;
 	return `[rgb(${color.red}, ${color.green}, ${color.blue})]`;
 }
+export function getCountFromGuestType(
+	guestType: string,
+	passengersValues: { adultCount: number; childCount: number; infantCount: number }
+) {
+	if (guestType === 'ADULT') {
+		return passengersValues.adultCount;
+	} else if (guestType === 'CHILD') {
+		return passengersValues.childCount;
+	} else if (guestType === 'INFANT') {
+		return passengersValues.infantCount;
+	}
+	return 0;
+}
+export function containsValidChars(str: string) {
+	const pattern = /^[a-zA-Z\s]*$/;
+	return pattern.test(str);
+}

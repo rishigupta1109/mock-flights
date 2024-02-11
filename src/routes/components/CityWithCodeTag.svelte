@@ -9,7 +9,7 @@
 	export let type: 'src' | 'dest' = 'src';
 
 	function handleClick() {
-		goto(`/search/${type}/`);
+		goto(`/city/search/${type}/`);
 	}
 </script>
 

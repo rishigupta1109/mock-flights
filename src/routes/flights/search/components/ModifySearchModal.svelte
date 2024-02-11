@@ -10,7 +10,8 @@
 		: ''}"
 >
 	<div class="modal-box top-0 flex flex-col gap-4 min-h-fit">
-		<span class="w-full flex justify-end">
+		<span class="w-full flex justify-between items-center">
+			<h2 class="heading-2">Modify Search</h2>
 			<button
 				class="bg-white p-2 rounded-md"
 				on:click={() => {
@@ -20,7 +21,6 @@
 				<CrossIcon color="primary" />
 			</button>
 		</span>
-		<h2 class="heading-2">Modify Search</h2>
 		<SearchFlight />
 	</div>
 	<form
