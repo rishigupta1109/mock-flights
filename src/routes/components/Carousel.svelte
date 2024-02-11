@@ -9,4 +9,12 @@
 	{#each items as item}
 		<CarouselCard {item} {isRecent} />
 	{/each}
+
+	{#if items.length === 0 && isRecent}
+		<p class="base-content-light">No recent searches found</p>
+	{/if}
+
+	{#if items.length === 0 && !isRecent}
+		<p class="base-content-light">No upcoming bookings found</p>
+	{/if}
 </div>

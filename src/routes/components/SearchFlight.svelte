@@ -6,6 +6,7 @@
 		searchFlightsParamsStore,
 		stateStore
 	} from '$lib/flights-commons/flights.store';
+	import { cacheRecentFlightSearches } from '../../utils/flights.utils';
 	import FlightRouteDisplay from './FlightRouteDisplay.svelte';
 	import SelectDates from './SelectDates.svelte';
 	import SelectTravellerNClass from './SelectTravellerNClass.svelte';
@@ -15,6 +16,7 @@
 	function searchFlightHandler() {
 		let str = JSON.stringify($searchFlightsParamsStore);
 		goto(`/flights/search?obj=${str}`);
+		cacheRecentFlightSearches($searchFlightsParamsStore);
 		searchFlightStore.searchFlight($searchFlightsParamsStore);
 		stateStore.closeModifySearchModal();
 	}

@@ -1,32 +1,19 @@
-<script>
+<script lang="ts">
+	import type { FlightSearchRequest } from '$lib/flights-commons/flights.type';
 	import RecentIcon from '$lib/icons/recentIcon.svelte';
+	import dayjs from 'dayjs';
+	import { getRecentFlightSearches } from '../../utils/flights.utils';
 	import Carousel from './Carousel.svelte';
-	let items = [
-		{
-			title: 'New Delhi → Bangalore',
-			subtitle: 'Mon, Nov 21',
-			thirdTitle: 'thirdTitle',
-			imageUrl: 'imageUrl',
-			id: 'id',
+	$: items = getRecentFlightSearches().map((item: FlightSearchRequest) => {
+		return {
+			title: `${item.src.city} → ${item.des.city}`,
+			subtitle: `${dayjs(item.departDate, 'DD-MM-YYYY').format('dd, MMM DD')}`,
+			thirdTitle: ``,
+			imageUrl: '',
+			id: '',
 			ctaButton: []
-		},
-		{
-			title: 'New Delhi → Bangalore',
-			subtitle: 'Mon, Nov 21',
-			thirdTitle: 'thirdTitle',
-			imageUrl: 'imageUrl',
-			id: 'id',
-			ctaButton: []
-		},
-		{
-			title: 'New Delhi → Bangalore',
-			subtitle: 'Mon, Nov 21',
-			thirdTitle: 'thirdTitle',
-			imageUrl: 'imageUrl',
-			id: 'id',
-			ctaButton: []
-		}
-	];
+		};
+	});
 </script>
 
 <div class="w-full flex flex-col text-base-content">

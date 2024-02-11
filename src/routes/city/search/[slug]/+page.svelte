@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import {
+		configStore,
 		popularCitiesStore,
 		searchCityStore,
 		searchFlightsParamsStore
@@ -13,7 +14,11 @@
 	import NavHeader from './components/NavHeader.svelte';
 	import { spring } from 'svelte/motion';
 	import { bounceInOut } from 'svelte/easing';
-	import { containsValidChars } from '../../../../utils/flights.utils';
+	import {
+		cacheRecentCitySearches,
+		containsValidChars,
+		getRecentCitySearches
+	} from '../../../../utils/flights.utils';
 
 	export let data: {
 		title: string;
@@ -37,11 +42,12 @@
 				return (error = 'Source and Destination cannot be same');
 			searchFlightsParamsStore.setDes(city);
 		}
+		cacheRecentCitySearches(city);
 		if (typeof window !== 'undefined') window.history.back();
 	}
 	$: {
 		if (!containsValidChars(city)) {
-			error = 'only characters (a-z) are allowed';
+			error = $configStore?.searchRequest?.configMap?.SEARCH_CITY_REGEX_ERROR_MESSAGE;
 		} else if (city.trim().length > 50) error = 'city name is too long';
 		else if (city.trim().length >= 3) {
 			error = '';
@@ -52,6 +58,7 @@
 			}, 1000);
 		}
 	}
+	$: recentCities = getRecentCitySearches();
 </script>
 
 <NavHeader {title} />
@@ -81,7 +88,7 @@
 	{/if}
 </div>
 {#if !showSearchResults}
-	<CityList on:click={clickHandler} title="Recent Searches" isRecent={true} />
+	<CityList on:click={clickHandler} title="Recent Searches" cities={recentCities} isRecent={true} />
 	<CityList on:click={clickHandler} title="Popular Cities" cities={popularCities} />
 {:else}
 	<CityList on:click={clickHandler} title="Search Results" cities={searchResults} />

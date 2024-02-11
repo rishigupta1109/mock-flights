@@ -16,5 +16,8 @@
 		{#each cities as city (city)}
 			<CityCard on:click {city} {isRecent} />
 		{/each}
+		{#if cities.length === 0}
+			<p class="base-content-light px-4">No cities found</p>
+		{/if}
 	</div>
 </div>

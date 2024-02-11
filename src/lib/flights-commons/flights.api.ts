@@ -1,6 +1,7 @@
 import { get } from 'svelte/store';
 import { loadingStore } from './flights.store';
-import type { FlightSearchRequest } from './flights.type';
+import type { ConfigResponse, FlightSearchRequest } from './flights.type';
+import { cacheData, getCachedData } from '../../utils/flights.utils';
 
 async function fetchWithToken(url: string, method: string, body: any) {
 	if (loadingStore) loadingStore.start();
@@ -23,7 +24,17 @@ const landingPageConfigURL =
 	'https://uat-web.gonuclei.com/com.gonuclei.flights.v1.LandingService/getConfig';
 
 export async function getConfig() {
-	const data = await fetchWithToken(landingPageConfigURL, 'POST', {});
+	const cachedData = getCachedData('landingPageConfig');
+	if (cachedData !== null) {
+		return cachedData;
+	}
+	const data: ConfigResponse = await fetchWithToken(landingPageConfigURL, 'POST', {});
+	console.log(data.searchRequest.configMap.CACHING_TIME_IN_MILLISECOND, 'cache time in ms');
+	cacheData(
+		'landingPageConfig',
+		data,
+		parseInt(data?.searchRequest?.configMap?.CACHING_TIME_IN_MILLISECOND)
+	);
 	return data;
 }
 

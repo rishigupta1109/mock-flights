@@ -13,6 +13,7 @@
 		};
 	});
 	let travellers: Traveller[] = configStore.getTravellerClasses();
+	$: totalPassengerCount = guests?.reduce((acc, guest) => acc + (guest.value || 0), 0);
 	let selectedTraveller: string = searchFlightsParamsStore
 		.getTravellerClass()
 		.key.toLocaleUpperCase();
@@ -20,7 +21,15 @@
 		if (!guests || !guests[i] || guests[i]?.value === undefined) return;
 		if (numToAdd === -1 && guests[i].value === guests[i].minValue) return;
 		if (numToAdd === 1 && guests[i].value === guests[i].maxValue) return;
+		if (
+			totalPassengerCount + numToAdd >
+				parseInt($configStore?.searchRequest?.configMap?.MAX_TOTAL_GUEST) ||
+			totalPassengerCount + numToAdd <
+				parseInt($configStore?.searchRequest?.configMap?.MIN_TOTAL_GUEST)
+		)
+			return;
 		guests[i].value = (guests[i].value || 0) + numToAdd;
+		totalPassengerCount += numToAdd;
 	}
 	$: console.log($searchFlightsParamsStore);
 

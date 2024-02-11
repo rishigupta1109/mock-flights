@@ -12,6 +12,9 @@ export function catchError(callback: Function, params?: any) {
 
 import { crossfade } from 'svelte/transition';
 import { elasticInOut, quintOut } from 'svelte/easing';
+import { get } from 'svelte/store';
+import { configStore } from '$lib/flights-commons/flights.store';
+import type { City, FlightSearchRequest } from '$lib/flights-commons/flights.type';
 
 export const [send, receive] = crossfade({
 	duration: (d) => Math.sqrt(d * 10000),
@@ -48,6 +51,69 @@ export function getCountFromGuestType(
 	return 0;
 }
 export function containsValidChars(str: string) {
-	const pattern = /^[a-zA-Z\s]*$/;
+	const pattern = new RegExp(get(configStore).searchRequest.configMap.SEARCH_CITY_REGEX);
 	return pattern.test(str);
+}
+
+export function cacheData(key: string, data: any, cacheTime: number) {
+	localStorage.setItem(key, JSON.stringify(data));
+	localStorage.setItem(key + 'CacheTime', JSON.stringify(Date.now() + cacheTime));
+}
+
+export function getCachedData(key: string) {
+	const cacheTime = localStorage.getItem(key + 'CacheTime');
+	if (cacheTime && parseInt(cacheTime) > Date.now()) {
+		return JSON.parse(localStorage.getItem(key) || '');
+	}
+	return null;
+}
+
+export function cacheRecentFlightSearches(search: FlightSearchRequest) {
+	const recentSearches = localStorage.getItem('recentSearches');
+	if (recentSearches) {
+		const searches = JSON.parse(recentSearches);
+		if (searches.includes(search)) {
+			return;
+		}
+		if (searches.length >= 5) {
+			searches.pop();
+		}
+		searches.unshift(search);
+		localStorage.setItem('recentSearches', JSON.stringify(searches));
+	} else {
+		localStorage.setItem('recentSearches', JSON.stringify([search]));
+	}
+}
+
+export function getRecentFlightSearches() {
+	const recentSearches = localStorage.getItem('recentSearches');
+	if (recentSearches) {
+		return JSON.parse(recentSearches);
+	}
+	return [];
+}
+
+export function cacheRecentCitySearches(city: City) {
+	const recentSearches = localStorage.getItem('recentCitySearches');
+	if (recentSearches) {
+		const searches = JSON.parse(recentSearches);
+		if (searches.includes(city)) {
+			return;
+		}
+		if (searches.length >= 5) {
+			searches.pop();
+		}
+		searches.unshift(city);
+		localStorage.setItem('recentCitySearches', JSON.stringify(searches));
+	} else {
+		localStorage.setItem('recentCitySearches', JSON.stringify([city]));
+	}
+}
+
+export function getRecentCitySearches() {
+	const recentSearches = localStorage.getItem('recentCitySearches');
+	if (recentSearches) {
+		return JSON.parse(recentSearches);
+	}
+	return [];
 }

@@ -4,7 +4,7 @@
 	import { Datepicker } from 'svelte-calendar';
 	import dayjs from 'dayjs';
 	import customParseFormat from 'dayjs/plugin/customParseFormat';
-	import { searchFlightsParamsStore } from '$lib/flights-commons/flights.store';
+	import { configStore, searchFlightsParamsStore } from '$lib/flights-commons/flights.store';
 
 	let departureDate: any;
 	let returnDate: any;
@@ -22,6 +22,7 @@
 		else departDate = dayjs($searchFlightsParamsStore.departDate, 'DD-MM-YYYY').toDate();
 	}
 	$: console.log('departDate', departDate, departDate.getTime(), $searchFlightsParamsStore);
+	$: maxCalendarDays = configStore.getMaxCalenderDays();
 	let theme = {
 		calendar: {
 			height: '100vh'
@@ -32,6 +33,8 @@
 <DuoCard>
 	<div slot="left" class="flex w-[45%] flex-col p-2 cursor-pointer">
 		<Datepicker
+			end={dayjs().add(parseInt(maxCalendarDays), 'day').toDate()}
+			start={dayjs().toDate()}
 			bind:store={departureDate}
 			bind:selected={departDate}
 			let:key
