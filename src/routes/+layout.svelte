@@ -4,6 +4,7 @@
 	import dayjs from 'dayjs';
 	import customParseFormat from 'dayjs/plugin/customParseFormat';
 	import {
+		alertStore,
 		configStore,
 		popularCitiesStore,
 		upcomingBookingStore,
@@ -11,6 +12,7 @@
 	} from '$lib/flights-commons/flights.store';
 	import { onMount } from 'svelte';
 	import Loading from '$lib/components/Loading.svelte';
+	import Alerts from '$lib/components/Alerts.svelte';
 	dayjs.extend(customParseFormat);
 	let loading = true;
 	onMount(async () => {
@@ -28,6 +30,7 @@
 	{:else}
 		<slot />
 	{/if}
+	<Alerts />
 </div>
 
 <style>

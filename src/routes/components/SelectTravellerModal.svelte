@@ -60,7 +60,7 @@
 </script>
 
 <dialog class="modal modal-bottom text-base-content bg-base-100 {open ? 'modal-open' : ''}">
-	<div class="modal-box bottom-0 flex flex-col gap-4 min-h-fit">
+	<div class="modal-box flex flex-col gap-4 min-h-fit">
 		<span class="w-full flex justify-end">
 			<button
 				class="bg-white p-2 rounded-md"

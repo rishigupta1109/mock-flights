@@ -33,5 +33,6 @@
 		</span>
 	</div>
 </DuoCard>
-
-<SelectTravellerModal bind:open={openModal} />
+{#key openModal}
+	<SelectTravellerModal bind:open={openModal} />
+{/key}

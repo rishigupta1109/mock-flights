@@ -20,6 +20,7 @@ async function fetchWithToken(url: string, method: string, body: any) {
 	if (loadingStore) loadingStore.stop();
 	return data;
 }
+
 const landingPageConfigURL =
 	'https://uat-web.gonuclei.com/com.gonuclei.flights.v1.LandingService/getConfig';
 

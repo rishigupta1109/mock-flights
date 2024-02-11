@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import BackIcon from '$lib/icons/backIcon.svelte';
+
 	export let back: string | undefined = undefined;
+
 	function navigateBack() {
 		if (back !== undefined) goto(back);
 		else if (typeof window !== 'undefined') window.history.back();

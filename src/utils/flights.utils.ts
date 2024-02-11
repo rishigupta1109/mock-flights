@@ -1,20 +1,22 @@
+import { crossfade } from 'svelte/transition';
+import { elasticInOut, quintOut } from 'svelte/easing';
+import { get } from 'svelte/store';
+import { alertStore, configStore } from '$lib/flights-commons/flights.store';
+import type { City, FlightSearchRequest } from '$lib/flights-commons/flights.type';
+
 export function getFormattedWallet(wallet: number, currencySymbol: string) {
 	return currencySymbol + new Intl.NumberFormat('en-IN').format(wallet);
 }
 
-export function catchError(callback: Function, params?: any) {
+export function catchError(callback: Function, params?: any, errorMesssage?: string) {
 	try {
 		return callback(params);
-	} catch (error) {
-		console.error(error);
+	} catch (error: any) {
+		console.log(error);
+		console.log(errorMesssage);
+		alertStore.openAlert(errorMesssage || error, 'error');
 	}
 }
-
-import { crossfade } from 'svelte/transition';
-import { elasticInOut, quintOut } from 'svelte/easing';
-import { get } from 'svelte/store';
-import { configStore } from '$lib/flights-commons/flights.store';
-import type { City, FlightSearchRequest } from '$lib/flights-commons/flights.type';
 
 export const [send, receive] = crossfade({
 	duration: (d) => Math.sqrt(d * 10000),
@@ -72,7 +74,15 @@ export function cacheRecentFlightSearches(search: FlightSearchRequest) {
 	const recentSearches = localStorage.getItem('recentSearches');
 	if (recentSearches) {
 		const searches = JSON.parse(recentSearches);
-		if (searches.includes(search)) {
+		if (
+			searches.findIndex((s: FlightSearchRequest) => {
+				return (
+					s.src.city === search.src.city &&
+					s.des.city === search.des.city &&
+					s.departDate === search.departDate
+				);
+			}) !== -1
+		) {
 			return;
 		}
 		if (searches.length >= 5) {
@@ -97,13 +107,20 @@ export function cacheRecentCitySearches(city: City) {
 	const recentSearches = localStorage.getItem('recentCitySearches');
 	if (recentSearches) {
 		const searches = JSON.parse(recentSearches);
-		if (searches.includes(city)) {
+
+		if (
+			searches.findIndex((c: City) => {
+				return c.city === city.city;
+			}) !== -1
+		) {
 			return;
 		}
+		console.log(searches, city);
 		if (searches.length >= 5) {
 			searches.pop();
 		}
 		searches.unshift(city);
+		console.log(searches, city);
 		localStorage.setItem('recentCitySearches', JSON.stringify(searches));
 	} else {
 		localStorage.setItem('recentCitySearches', JSON.stringify([city]));

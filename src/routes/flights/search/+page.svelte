@@ -11,17 +11,25 @@
 	import FlightCard from './components/FlightCard.svelte';
 	import SkeletonFlightCard from './components/SkeletonFlightCard.svelte';
 	import ModifySearchModal from './components/ModifySearchModal.svelte';
+	import { catchError } from '../../../utils/flights.utils';
 
-	onMount(() => {
-		console.log('Mounted');
-		const query = new URLSearchParams(window.location.search);
-		const searchParam = query.get('obj') ? JSON.parse(query.get('obj') as string) : {};
-		console.log('searchParam', searchParam);
-		if (!$stateStore.isModifySearchModalOpen)
-			searchFlightStore.searchFlight(searchParam as FlightSearchRequest);
-		if (!$stateStore.isModifySearchModalOpen) searchFlightsParamsStore.set(searchParam);
-		console.log('searchParam', searchParam, $searchFlightStore);
-	});
+	onMount(
+		catchError.bind(
+			null,
+			() => {
+				console.log('Mounted');
+				const query = new URLSearchParams(window.location.search);
+				const searchParam = query.get('obj') ? JSON.parse(query.get('obj') as string) : {};
+				console.log('searchParam', searchParam);
+				if (!$stateStore.isModifySearchModalOpen)
+					searchFlightStore.searchFlight(searchParam as FlightSearchRequest);
+				if (!$stateStore.isModifySearchModalOpen) searchFlightsParamsStore.set(searchParam);
+				console.log('searchParam', searchParam, $searchFlightStore);
+			},
+			undefined,
+			'Invalid search params. Please try again.'
+		)
+	);
 	$: console.log('searchFlightStore', $searchFlightStore, $searchFlightsParamsStore);
 	$: flights = $searchFlightStore?.onwardFlights || [];
 </script>

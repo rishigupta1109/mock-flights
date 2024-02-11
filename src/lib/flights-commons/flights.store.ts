@@ -36,6 +36,45 @@ const createLoadingStore = () => {
 
 export const loadingStore = createLoadingStore();
 
+function createAlertStore() {
+	const { subscribe, set, update } = writable<{
+		isOpen: boolean;
+		message: string;
+		type: 'info' | 'error' | 'success';
+	}>({
+		isOpen: false,
+		message: '',
+		type: 'info'
+	});
+	return {
+		subscribe,
+		set,
+		update,
+		openAlert: (message: string, type: 'info' | 'error' | 'success') => {
+			set({
+				isOpen: true,
+				message,
+				type
+			});
+			setTimeout(() => {
+				update((state) => {
+					state.isOpen = false;
+					return state;
+				});
+			}, 2000);
+		},
+		closeAlert: () => {
+			set({
+				isOpen: false,
+				message: '',
+				type: 'info'
+			});
+		}
+	};
+}
+
+export const alertStore = createAlertStore();
+
 function createConfigStore() {
 	const { subscribe, set, update } = writable<ConfigResponse>();
 
