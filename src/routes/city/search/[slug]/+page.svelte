@@ -88,8 +88,17 @@
 	{/if}
 </div>
 {#if !showSearchResults}
-	<CityList on:click={clickHandler} title="Recent Searches" cities={recentCities} isRecent={true} />
-	<CityList on:click={clickHandler} title="Popular Cities" cities={popularCities} />
+	{#if recentCities.length > 0}
+		<CityList
+			on:click={clickHandler}
+			title="Recent Searches"
+			cities={recentCities}
+			isRecent={true}
+		/>
+	{/if}
+	{#if popularCities.length > 0}
+		<CityList on:click={clickHandler} title="Popular Cities" cities={popularCities} />
+	{/if}
 {:else}
 	<CityList on:click={clickHandler} title="Search Results" cities={searchResults} />
 {/if}

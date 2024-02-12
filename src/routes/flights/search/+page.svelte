@@ -12,6 +12,8 @@
 	import SkeletonFlightCard from './components/SkeletonFlightCard.svelte';
 	import ModifySearchModal from './components/ModifySearchModal.svelte';
 	import { catchError } from '../../../utils/flights.utils';
+	import { goto } from '$app/navigation';
+	import SortAndFilterOverlay from './components/SortAndFilterOverlay.svelte';
 
 	onMount(
 		catchError.bind(
@@ -27,11 +29,19 @@
 				console.log('searchParam', searchParam, $searchFlightStore);
 			},
 			undefined,
-			'Invalid search params. Please try again.'
+			'Invalid search params. Please try again.',
+			() => {
+				goto('/');
+			}
 		)
 	);
 	$: console.log('searchFlightStore', $searchFlightStore, $searchFlightsParamsStore);
 	$: flights = $searchFlightStore?.onwardFlights || [];
+	$: errorHandlingDetail = $searchFlightStore?.errorHandlingDetail;
+	$: bottomOverlayError = errorHandlingDetail?.bottomOverlayError;
+	$: description = bottomOverlayError?.description;
+	$: ctaButton = bottomOverlayError?.ctaButtons;
+	$: imageURL = bottomOverlayError?.imageUrl;
 </script>
 
 <NavbarHeader
@@ -52,15 +62,19 @@
 	</div>
 {:else}
 	<div class="h-full w-full flex p-8 justify-center items-center flex-col gap-4">
-		<p class="base-content-light">Looks like we couldnt find any flights</p>
+		<img src={imageURL} alt="no flights found" />
+		<p class="base-content-light">
+			{description}
+		</p>
 		<button
 			class="btn btn-xl btn-success text-base-200 w-full"
 			on:click={() => {
 				stateStore.openModifySearchModal();
 			}}
 		>
-			Modify Search
+			{ctaButton?.[0].ctaText}
 		</button>
 	</div>
 {/if}
 <ModifySearchModal />
+<SortAndFilterOverlay />

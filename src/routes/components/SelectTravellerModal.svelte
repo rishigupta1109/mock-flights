@@ -1,9 +1,13 @@
 <script lang="ts">
 	import CrossIcon from '$lib/icons/crossIcon.svelte';
 	import { type Guest, type Traveller } from '$lib/flights-commons/flights.type';
-	import { configStore, searchFlightsParamsStore } from '$lib/flights-commons/flights.store';
+	import {
+		configStore,
+		searchFlightsParamsStore,
+		stateStore
+	} from '$lib/flights-commons/flights.store';
 	import { getCountFromGuestType } from '../../utils/flights.utils';
-	export let open: boolean = false;
+	$: open = $stateStore.isTravellerModalOpen;
 	$: passengersValues = $searchFlightsParamsStore.passenger;
 
 	$: guests = configStore.getGuests().map((guest) => {
@@ -18,6 +22,7 @@
 		.getTravellerClass()
 		.key.toLocaleUpperCase();
 	function changeHandler(i: number, numToAdd: number) {
+		let adultCount = guests.find((guest) => guest.guestType === 'ADULT')?.value || 0;
 		if (!guests || !guests[i] || guests[i]?.value === undefined) return;
 		if (numToAdd === -1 && guests[i].value === guests[i].minValue) return;
 		if (numToAdd === 1 && guests[i].value === guests[i].maxValue) return;
@@ -28,6 +33,7 @@
 				parseInt($configStore?.searchRequest?.configMap?.MIN_TOTAL_GUEST)
 		)
 			return;
+		if (guests[i].guestType === 'INFANT' && guests[i].value + numToAdd > adultCount) return;
 		guests[i].value = (guests[i].value || 0) + numToAdd;
 		totalPassengerCount += numToAdd;
 	}
@@ -55,7 +61,7 @@
 				value: 'Economy'
 			}
 		);
-		open = false;
+		stateStore.closeTravellerModal();
 	}
 </script>
 
@@ -65,7 +71,7 @@
 			<button
 				class="bg-white p-2 rounded-md"
 				on:click={() => {
-					open = false;
+					stateStore.closeTravellerModal();
 				}}
 			>
 				<CrossIcon color="primary" />
@@ -114,7 +120,7 @@
 		class="modal-backdrop"
 		on:submit={(e) => {
 			e.preventDefault();
-			open = false;
+			stateStore.closeTravellerModal();
 		}}
 	>
 		<button>close</button>

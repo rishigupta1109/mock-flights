@@ -1,7 +1,15 @@
 <script lang="ts">
-	import type { UpcomingBooking } from '$lib/flights-commons/flights.type';
+	import { goto } from '$app/navigation';
+	import {
+		searchFlightStore,
+		searchFlightsParamsStore,
+		stateStore
+	} from '$lib/flights-commons/flights.store';
+	import type { FlightSearchRequest, UpcomingBooking } from '$lib/flights-commons/flights.type';
 	import RecentIcon from '$lib/icons/recentIcon.svelte';
 	import RightArrowHalf from '$lib/icons/rightArrowHalf.svelte';
+	import { cacheRecentFlightSearches } from '../../utils/flights.utils';
+
 	export let item: UpcomingBooking = {
 		title: 'title',
 		subtitle: 'subtitle',
@@ -11,6 +19,18 @@
 		ctaButton: []
 	};
 	export let isRecent: boolean;
+	const ctaRecentItem: any = item.ctaButton?.[0];
+
+	function clickHandler() {
+		if (!ctaRecentItem) {
+			return;
+		}
+		let str = JSON.stringify(ctaRecentItem);
+		goto(`/flights/search?obj=${str}`);
+		searchFlightsParamsStore.set(ctaRecentItem);
+		searchFlightStore.searchFlight(ctaRecentItem);
+		stateStore.closeModifySearchModal();
+	}
 </script>
 
 <div class="flex justify-between items-center min-w-80 p-4 gap-8 rounded-md bg-base-200">
@@ -32,5 +52,7 @@
 			{/if}
 		</div>
 	</div>
-	<RightArrowHalf color="black" />
+	<button on:click={clickHandler}>
+		<RightArrowHalf color="black" />
+	</button>
 </div>

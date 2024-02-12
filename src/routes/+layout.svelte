@@ -7,12 +7,14 @@
 		alertStore,
 		configStore,
 		popularCitiesStore,
+		stateStore,
 		upcomingBookingStore,
 		walletStore
 	} from '$lib/flights-commons/flights.store';
 	import { onMount } from 'svelte';
 	import Loading from '$lib/components/Loading.svelte';
 	import Alerts from '$lib/components/Alerts.svelte';
+	import SelectTravellerModal from './components/SelectTravellerModal.svelte';
 	dayjs.extend(customParseFormat);
 	let loading = true;
 	onMount(async () => {
@@ -29,6 +31,9 @@
 		<Loading />
 	{:else}
 		<slot />
+		{#key $stateStore.isTravellerModalOpen}
+			<SelectTravellerModal />
+		{/key}
 	{/if}
 	<Alerts />
 </div>

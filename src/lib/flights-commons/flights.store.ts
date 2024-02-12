@@ -415,7 +415,8 @@ export const searchFlightsParamsStore = createSearchFlightsParamsStore();
 
 function createStateStore() {
 	const { set, subscribe, update } = writable({
-		isModifySearchModalOpen: false
+		isModifySearchModalOpen: false,
+		isTravellerModalOpen: false
 	});
 	return {
 		set,
@@ -434,6 +435,23 @@ function createStateStore() {
 				return {
 					...state,
 					isModifySearchModalOpen: false
+				};
+			});
+		},
+
+		openTravellerModal: () => {
+			update((state) => {
+				return {
+					...state,
+					isTravellerModalOpen: true
+				};
+			});
+		},
+		closeTravellerModal: () => {
+			update((state) => {
+				return {
+					...state,
+					isTravellerModalOpen: false
 				};
 			});
 		}

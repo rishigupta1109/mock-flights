@@ -11,12 +11,14 @@
 			thirdTitle: ``,
 			imageUrl: '',
 			id: '',
-			ctaButton: []
+			ctaButton: [item]
 		};
 	});
 </script>
 
-<div class="w-full flex flex-col text-base-content">
-	<p>Recent Searches</p>
-	<Carousel {items} isRecent={true} />
-</div>
+{#if items.length > 0}
+	<div class="w-full flex flex-col text-base-content">
+		<p>Recent Searches</p>
+		<Carousel {items} isRecent={true} />
+	</div>
+{/if}

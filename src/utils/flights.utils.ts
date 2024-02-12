@@ -8,13 +8,19 @@ export function getFormattedWallet(wallet: number, currencySymbol: string) {
 	return currencySymbol + new Intl.NumberFormat('en-IN').format(wallet);
 }
 
-export function catchError(callback: Function, params?: any, errorMesssage?: string) {
+export function catchError(
+	callback: Function,
+	params?: any,
+	errorMesssage?: string,
+	errorHandler?: Function
+) {
 	try {
 		return callback(params);
 	} catch (error: any) {
 		console.log(error);
 		console.log(errorMesssage);
 		alertStore.openAlert(errorMesssage || error, 'error');
+		if (errorHandler) errorHandler();
 	}
 }
 

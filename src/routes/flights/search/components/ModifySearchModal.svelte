@@ -5,11 +5,11 @@
 </script>
 
 <dialog
-	class="modal modal-top text-base-content bg-base-100 {$stateStore.isModifySearchModalOpen
+	class="modal modal-top w-full text-base-content bg-base-100 {$stateStore.isModifySearchModalOpen
 		? 'modal-open'
 		: ''}"
 >
-	<div class="modal-box top-0 flex flex-col gap-4 min-h-fit">
+	<div class="modal-box w-full rounded-t-none flex flex-col gap-4 min-h-fit">
 		<span class="w-full flex justify-between items-center">
 			<h2 class="heading-2">Modify Search</h2>
 			<button
