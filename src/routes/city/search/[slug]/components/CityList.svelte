@@ -11,7 +11,7 @@
 </script>
 
 <div>
-	<h2 class="heading-1 text-base-content px-4">{title}</h2>
+	<h2 class="card-sub-heading text-base-content px-4">{title}</h2>
 	<div class="flex flex-col py-4">
 		{#each cities as city (city)}
 			<CityCard on:click {city} {isRecent} />

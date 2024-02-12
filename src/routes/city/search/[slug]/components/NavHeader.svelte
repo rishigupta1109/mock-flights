@@ -4,5 +4,5 @@
 </script>
 
 <Navbar>
-	<p class="heading-1">{title}</p>
+	<p class="nav-text">{title}</p>
 </Navbar>

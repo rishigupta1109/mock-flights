@@ -4,12 +4,12 @@ import { error } from '@sveltejs/kit';
 export function load({ params }) {
 	if (params.slug === 'src') {
 		return {
-			title: 'Select source city',
+			title: 'Select Source city',
 			variable: 'src'
 		};
 	} else if (params.slug === 'dest') {
 		return {
-			title: 'Select destination city',
+			title: 'Select Destination city',
 			variable: 'dest'
 		};
 	}

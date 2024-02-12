@@ -21,8 +21,8 @@
 	{:else}
 		<LocationIcon />
 	{/if}
-	<span>
-		<p class="text-xs">{city.city}</p>
+	<span class="flex flex-col gap-1">
+		<p class="card-content font-medium">{city.city}</p>
 		<p class="base-content-light text-xs">{city.iataCode}-{city.name}</p>
 	</span>
 </div>

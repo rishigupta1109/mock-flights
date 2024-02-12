@@ -67,7 +67,8 @@
 
 <dialog class="modal modal-bottom text-base-content bg-base-100 {open ? 'modal-open' : ''}">
 	<div class="modal-box flex flex-col gap-4 min-h-fit">
-		<span class="w-full flex justify-end">
+		<span class="w-full flex justify-end relative">
+			<span class="w-16 h-1 rounded-xl bg-[#878C9D] absolute left-1/2 -translate-x-1/2" />
 			<button
 				class="bg-white p-2 rounded-md"
 				on:click={() => {
@@ -77,12 +78,12 @@
 				<CrossIcon color="primary" />
 			</button>
 		</span>
-		<h2 class="heading-2">Select Traveller(s)</h2>
+		<h2 class="heading-2 text-xl">Select Traveller(s)</h2>
 		{#each guests as guest, i}
 			<div class="flex justify-between items-center">
 				<span class="flex flex-col">
 					<p class="card-sub-heading">{guest.textName}</p>
-					<p class="sub-text">{guest.subTextName}</p>
+					<p class="sub-text base-content-light">{guest.subTextName}</p>
 				</span>
 				<div class="flex items-center bg-base-200 p-2 rounded-2xl">
 					<button
@@ -97,7 +98,7 @@
 				</div>
 			</div>
 		{/each}
-		<h2 class="heading-2">Select Class</h2>
+		<h2 class="heading-2 text-xl">Select Class</h2>
 
 		{#each travellers as traveller, i}
 			<span class="flex items-center gap-4">
@@ -109,7 +110,7 @@
 					bind:group={selectedTraveller}
 					class="radio radio-sm radio-primary"
 				/>
-				<label for={traveller.key}>{traveller.value}</label>
+				<label class="card-sub-heading" for={traveller.key}>{traveller.value}</label>
 			</span>
 		{/each}
 

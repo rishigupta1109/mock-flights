@@ -17,7 +17,7 @@
 <Navbar back={'/'}>
 	<div class="flex justify-between items-center w-full">
 		<div class="flex flex-col p-2">
-			<span class="flex heading-1">
+			<span class="flex nav-text">
 				{src}
 				<span class="flex items-center justify-center w-8 h-8 bg-primary rounded-full">
 					<RightArrow color="white" />
@@ -25,7 +25,9 @@
 
 				{des}
 			</span>
-			<span>{departDate} | {passengerCount} Traveller | {TravellerClass.value} </span>
+			<span class="card-content"
+				>{departDate} | {passengerCount} Traveller | {TravellerClass.value}
+			</span>
 		</div>
 		<button on:click class="bg-base-200 p-1 rounded-md">
 			<EditIcon />

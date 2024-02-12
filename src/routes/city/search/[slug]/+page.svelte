@@ -69,7 +69,7 @@
 			bind:value={city}
 			placeholder="Enter City/Airport Name"
 			maxlength="50"
-			class="p-2 w-full outline-none text-base-content"
+			class="p-2 w-full outline-none text-base-content sub-text"
 		/>
 		{#if !showSearchResults}
 			<SearchIcon />
