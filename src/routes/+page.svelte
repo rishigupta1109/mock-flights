@@ -11,7 +11,7 @@
 	<Loading />
 {:else}
 	<NavbarHeader />
-	<div class="flex flex-col p-4 gap-4">
+	<div class="flex flex-col p-6 gap-4">
 		<SearchFlight />
 		<UpcomingFlights />
 		<RecentSearches />

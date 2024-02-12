@@ -28,20 +28,20 @@
 
 <SelectTravellerNClass />
 
-<div class="flex justify-start items-center gap-4">
+<div class="flex justify-start items-center gap-2">
 	<input
 		bind:checked
 		type="checkbox"
 		name="non-stop"
-		class="checkbox checkbox-primary"
+		class="checkbox checkbox-primary h-[18px] w-[18px]"
 		data-testid="checkbox-non-stop"
 	/>
-	<p class="base-content-light text-sm">Show only non-stop flights</p>
+	<p class="sub-text text-[14px] base-content-light">Show only non-stop flights</p>
 </div>
 
 <button
 	on:click={searchFlightHandler}
-	class="btn btn-success text-base-200 w-full"
+	class="btn btn-success text-base-200 text-xl w-full"
 	data-testid="search-flight"
 >
 	Search Flights

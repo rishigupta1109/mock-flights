@@ -24,9 +24,10 @@
 		in:receive={{ key: c.iataCode }}
 		out:send={{ key: c.iataCode }}
 	>
-		<span class="rounded-sm border-base-300 border py-1/2 px-2 text-xs text-base-content"
+		<span
+			class="rounded-sm border-base-300 border py-1/2 px-2 text-[9px] font-normal text-base-content"
 			>{c.iataCode}</span
 		>
-		<p class="text-base-content heading-2">{c.city}</p>
+		<p class="text-base-content card-sub-heading">{c.city}</p>
 	</div>
 {/each}

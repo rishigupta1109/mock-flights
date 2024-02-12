@@ -25,7 +25,8 @@
 	$: maxCalendarDays = configStore.getMaxCalenderDays();
 	let theme = {
 		calendar: {
-			height: '100vh'
+			maxWidth: '90vw',
+			maxHeight: '90vh'
 		}
 	};
 </script>
@@ -43,9 +44,9 @@
 			{theme}
 		>
 			<button class="flex flex-col w-full" in:receive|local={{ key }} out:send|local={{ key }}>
-				<span class="card-content base-content-light">Departure</span>
+				<span class="sub-text base-content-light">Departure</span>
 				<span class="card-sub-heading">{dayjs($departureDate?.selected).format('D MMM')}</span>
-				<span class="card-content base-content-light">
+				<span class="sub-text base-content-light">
 					{dayjs($departureDate?.selected).format('dddd')}
 				</span>
 			</button>
@@ -55,17 +56,17 @@
 		<Datepicker bind:store={returnDate} let:key let:send let:receive {theme}>
 			<button class="flex flex-col w-full" in:receive|local={{ key }} out:send|local={{ key }}>
 				{#if $returnDate?.hasChosen}
-					<span class="card-content base-content-light">Departure</span>
+					<span class="sub-text base-content-light">Departure</span>
 					<span class="card-sub-heading">{dayjs($returnDate.selected).format('D MMM')}</span>
-					<span class="card-content base-content-light">
+					<span class="sub-text base-content-light">
 						{dayjs($returnDate.selected).format('dddd')}
 					</span>
 				{:else}
 					<div class="flex justify-between items-center w-full gap-8">
 						<div class="flex flex-col justify-center items-start">
-							<span class="card-content base-content-light">Return</span>
+							<span class="sub-text base-content-light">Return</span>
 							<span class="card-sub-heading">Add Return</span>
-							<span class="card-content base-content-light"> and save more! </span>
+							<span class="sub-text base-content-light"> and save more! </span>
 						</div>
 						<button class="h-6 aspect-square rounded-full cursor-pointer">
 							<AddIcon color="primary" testId="add-icon" />
@@ -74,13 +75,5 @@
 				{/if}
 			</button>
 		</Datepicker>
-		<!-- <div class="flex flex-col p-2">
-			<span class="card-content base-content-light">Return</span>
-			<span class="card-sub-heading">Add Return</span>
-			<span class="card-content base-content-light">and save more!</span>
-		</div>
-		<button class="h-6 aspect-square rounded-full cursor-pointer">
-			<AddIcon color="primary" testId="add-icon" />
-		</button> -->
 	</div>
 </DuoCard>

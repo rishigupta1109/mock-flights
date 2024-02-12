@@ -34,16 +34,16 @@
 </script>
 
 <div class="flex justify-between items-center min-w-80 p-4 gap-8 rounded-md bg-base-200">
-	<div class="flex justify-between items-center gap-4 w-9/10">
-		<span class="w-2/5 flex justify-center items-center">
+	<div class="flex justify-between items-center gap-4 w-full">
+		<span class="w-1/4 flex justify-center items-center">
 			{#if isRecent}
 				<svelte:component this={RecentIcon} />
 			{:else}
-				<img src={item.imageUrl} alt="flight" class="rounded-md aspect-square h-14" />
+				<img src={item.imageUrl} alt="flight" class="rounded-md aspect-square h-[53px]" />
 			{/if}
 		</span>
-		<div class="flex w-3/5 flex-col text-black gap-1">
-			<p class="w-full whitespace-nowrap">
+		<div class="flex w-3/4 flex-col justify-center items-start text-black gap-1">
+			<p class="w-full content whitespace-nowrap">
 				{item.title}
 			</p>
 			<p class="text-xs base-content-light">{item.subtitle}</p>

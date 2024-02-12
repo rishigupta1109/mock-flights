@@ -20,11 +20,11 @@
 </script>
 
 <Navbar back="/">
-	<p class="heading-1">Flights</p>
+	<p class="nav-text">Flights</p>
 	<div class="flex justify-between items-stretch gap-4 ml-auto">
 		{#if showWallet}
 			<span
-				class="flex items-center justify-between gap-2 cursor-pointer bg-base-200 rounded-md text-primary p-1 px-2"
+				class="flex items-center justify-between gap-2 cursor-pointer bg-base-200 rounded-md text-primary card-content p-2 px-2"
 			>
 				<WalletIcon color="primary" testId="wallet-icon" />
 

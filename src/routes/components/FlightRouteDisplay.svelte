@@ -37,14 +37,10 @@
 	</div>
 	<div class="flex flex-col w-full justify-between gap-2">
 		<CityWithCodeTag type={'src'} city={src} />
-		<span class="w-full border border-spacing-4 border-dashed border-base-300" />
+		<span class="w-full border-[0.9px] border-dashed border-base-300" />
 		<CityWithCodeTag type="dest" city={des} />
 	</div>
-	<button
-		class="border h-10 aspect-square rounded-full border-primary"
-		bind:this={exchangeBtn}
-		on:click={handleExchange}
-	>
+	<button class="h-10 aspect-square rounded-full" bind:this={exchangeBtn} on:click={handleExchange}>
 		<ExchangeIcon color="primary" testId="exchange-icon" />
 	</button>
 </div>
