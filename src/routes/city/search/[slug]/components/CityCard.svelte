@@ -6,6 +6,7 @@
 
 	export let city: Airport;
 	export let isRecent: boolean = false;
+
 	const dispatch = createEventDispatcher();
 </script>
 

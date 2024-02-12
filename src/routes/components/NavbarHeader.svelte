@@ -6,6 +6,7 @@
 	import { getFormattedWallet } from '../../utils/flights.utils';
 	import { configStore, walletStore } from '$lib/flights-commons/flights.store';
 	import { onMount } from 'svelte';
+
 	let wallet = 0;
 	let currencySymbol = '';
 	let showWallet = false;

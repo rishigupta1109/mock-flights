@@ -35,7 +35,7 @@
 			}
 		)
 	);
-	$: console.log('searchFlightStore', $searchFlightStore, $searchFlightsParamsStore);
+
 	$: flights = $searchFlightStore?.onwardFlights || [];
 	$: errorHandlingDetail = $searchFlightStore?.errorHandlingDetail;
 	$: bottomOverlayError = errorHandlingDetail?.bottomOverlayError;

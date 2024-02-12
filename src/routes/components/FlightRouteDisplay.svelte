@@ -6,12 +6,12 @@
 
 	let src = [$searchFlightsParamsStore.src];
 	let des = [$searchFlightsParamsStore.des];
+	let exchangeBtn: HTMLButtonElement;
+
 	$: if ($searchFlightsParamsStore.src !== des[0] && $searchFlightsParamsStore.des !== src[0]) {
 		src = [$searchFlightsParamsStore.src];
 		des = [$searchFlightsParamsStore.des];
 	}
-
-	let exchangeBtn: HTMLButtonElement;
 
 	function handleExchange(e: MouseEvent) {
 		searchFlightsParamsStore.exchangeCities();

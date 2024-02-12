@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import {
 		configStore,
 		popularCitiesStore,
@@ -9,11 +8,8 @@
 	import type { Airport } from '$lib/flights-commons/flights.type';
 	import CrossIcon from '$lib/icons/crossIcon.svelte';
 	import SearchIcon from '$lib/icons/searchIcon.svelte';
-	import { fly } from 'svelte/transition';
 	import CityList from './components/CityList.svelte';
 	import NavHeader from './components/NavHeader.svelte';
-	import { spring } from 'svelte/motion';
-	import { bounceInOut } from 'svelte/easing';
 	import {
 		cacheRecentCitySearches,
 		containsValidChars,
@@ -24,13 +20,31 @@
 		title: string;
 		variable: string;
 	};
+
 	let { title, variable } = data;
 	let city: string = '';
 	let showSearchResults: boolean = false;
 	let timeOut: NodeJS.Timeout;
 	let error: string = '';
+
 	const popularCities: Airport[] = popularCitiesStore.getPopularCities();
+
 	$: searchResults = $searchCityStore?.airportList || [];
+	$: recentCities = getRecentCitySearches();
+	$: {
+		if (!containsValidChars(city)) {
+			error = $configStore?.searchRequest?.configMap?.SEARCH_CITY_REGEX_ERROR_MESSAGE;
+		} else if (city.trim().length > 50) error = 'city name is too long';
+		else if (city.trim().length >= 3) {
+			error = '';
+			showSearchResults = true;
+			if (timeOut) clearTimeout(timeOut);
+			timeOut = setTimeout(() => {
+				searchCityStore.getSearchCity(city);
+			}, 1000);
+		}
+	}
+
 	function clickHandler(e: CustomEvent<{ city: Airport }>) {
 		const city = e.detail.city;
 		if (variable === 'src') {
@@ -45,20 +59,6 @@
 		cacheRecentCitySearches(city);
 		if (typeof window !== 'undefined') window.history.back();
 	}
-	$: {
-		if (!containsValidChars(city)) {
-			error = $configStore?.searchRequest?.configMap?.SEARCH_CITY_REGEX_ERROR_MESSAGE;
-		} else if (city.trim().length > 50) error = 'city name is too long';
-		else if (city.trim().length >= 3) {
-			error = '';
-			showSearchResults = true;
-			if (timeOut) clearTimeout(timeOut);
-			timeOut = setTimeout(() => {
-				searchCityStore.getSearchCity(city);
-			}, 1000);
-		}
-	}
-	$: recentCities = getRecentCitySearches();
 </script>
 
 <NavHeader {title} />

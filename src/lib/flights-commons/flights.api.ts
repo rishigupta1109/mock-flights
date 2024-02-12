@@ -2,7 +2,11 @@ import { get } from 'svelte/store';
 import { loadingStore } from './flights.store';
 import type { ConfigResponse, FlightSearchRequest } from './flights.type';
 import { cacheData, getCachedData } from '../../utils/flights.utils';
-
+const errorCodes = [400, 401, 402, 403, 404];
+const errorMesssage: any = {
+	401: 'Unauthorized User',
+	404: 'Not Found'
+};
 async function fetchWithToken(url: string, method: string, body: any) {
 	if (loadingStore) loadingStore.start();
 	const token = import.meta.env.VITE_TOKEN;
@@ -15,6 +19,9 @@ async function fetchWithToken(url: string, method: string, body: any) {
 		headers,
 		body: JSON.stringify(body)
 	});
+	if (errorCodes.includes(res.status)) {
+		throw new Error(errorMesssage[res.status] || 'Something Went Wrong');
+	}
 	let data = await res.json();
 	console.log(data);
 	if (loadingStore) loadingStore.stop();

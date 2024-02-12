@@ -3,17 +3,17 @@
 	import { getRGBColor } from '../../../../utils/flights.utils';
 
 	export let flight: FlightSegment;
+
 	const fare = flight.fareList[0].currencySymbol + flight.fareList[0].fareS;
 	const speacialFeatures = flight.specialFeatures;
 	const timeFrame = flight.onwardSegmentDetails.airlineTime;
 	const duration = flight.onwardSegmentDetails.airlineDuration;
 	const airLineInfo = flight.onwardSegmentDetails.segmentAirlineInfos[0];
 	const { airlineIconUrl, airlineName } = airLineInfo;
-	console.log(flight.fareList[0]?.color);
 	const fareColor = getRGBColor(flight.fareList[0]?.color) || 'base-content';
 	let fareElement: HTMLElement;
+
 	$: if (fareElement) {
-		console.log(fareElement);
 		fareElement.style.color = fareColor;
 	}
 </script>

@@ -34,8 +34,6 @@ const createLoadingStore = () => {
 	};
 };
 
-export const loadingStore = createLoadingStore();
-
 function createAlertStore() {
 	const { subscribe, set, update } = writable<{
 		isOpen: boolean;
@@ -72,8 +70,6 @@ function createAlertStore() {
 		}
 	};
 }
-
-export const alertStore = createAlertStore();
 
 function createConfigStore() {
 	const { subscribe, set, update } = writable<ConfigResponse>();
@@ -244,7 +240,6 @@ function createConfigStore() {
 		}
 	};
 }
-export const configStore = createConfigStore();
 
 const createWalletStore = () => {
 	const { subscribe, set, update } = writable<WalletResponse>();
@@ -266,8 +261,6 @@ const createWalletStore = () => {
 	};
 };
 
-export const walletStore = createWalletStore();
-
 const createUpcomingBookingStore = () => {
 	const { subscribe, set, update } = writable<UpcomingBookingResponse>();
 	return {
@@ -285,8 +278,6 @@ const createUpcomingBookingStore = () => {
 	};
 };
 
-export const upcomingBookingStore = createUpcomingBookingStore();
-
 const createPopularCitiesStore = () => {
 	const { subscribe, set, update } = writable<AirportListResponse>();
 	return {
@@ -303,8 +294,6 @@ const createPopularCitiesStore = () => {
 		}
 	};
 };
-
-export const popularCitiesStore = createPopularCitiesStore();
 
 const createSearchCityStore = () => {
 	const { subscribe, set, update } = writable<AirportListResponse>();
@@ -324,8 +313,6 @@ const createSearchCityStore = () => {
 	};
 };
 
-export const searchCityStore = createSearchCityStore();
-
 const createSearchFlightStore = () => {
 	const { subscribe, set, update } = writable<FlightSearchResponse>();
 	return {
@@ -343,8 +330,6 @@ const createSearchFlightStore = () => {
 		}
 	};
 };
-
-export const searchFlightStore = createSearchFlightStore();
 
 function createSearchFlightsParamsStore() {
 	const { subscribe, set, update } = writable<FlightSearchRequest>();
@@ -411,10 +396,11 @@ function createSearchFlightsParamsStore() {
 	};
 }
 
-export const searchFlightsParamsStore = createSearchFlightsParamsStore();
-
 function createStateStore() {
-	const { set, subscribe, update } = writable({
+	const { set, subscribe, update } = writable<{
+		isModifySearchModalOpen: boolean;
+		isTravellerModalOpen: boolean;
+	}>({
 		isModifySearchModalOpen: false,
 		isTravellerModalOpen: false
 	});
@@ -458,4 +444,13 @@ function createStateStore() {
 	};
 }
 
+export const loadingStore = createLoadingStore();
+export const alertStore = createAlertStore();
+export const configStore = createConfigStore();
+export const walletStore = createWalletStore();
+export const upcomingBookingStore = createUpcomingBookingStore();
+export const popularCitiesStore = createPopularCitiesStore();
+export const searchCityStore = createSearchCityStore();
+export const searchFlightStore = createSearchFlightStore();
+export const searchFlightsParamsStore = createSearchFlightsParamsStore();
 export const stateStore = createStateStore();

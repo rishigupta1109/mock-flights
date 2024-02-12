@@ -7,7 +7,6 @@
 		$searchFlightsParamsStore.passenger.adultCount +
 		$searchFlightsParamsStore.passenger.childCount +
 		$searchFlightsParamsStore.passenger.infantCount;
-	$: console.log($searchFlightsParamsStore);
 </script>
 
 <DuoCard

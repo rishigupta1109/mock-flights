@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { popularCitiesStore } from '$lib/flights-commons/flights.store';
 	import type { Airport } from '$lib/flights-commons/flights.type';
-	import LocationIcon from '$lib/icons/locationIcon.svelte';
-	import RecentIcon from '$lib/icons/recentIcon.svelte';
 	import CityCard from './CityCard.svelte';
 
 	export let title: string;

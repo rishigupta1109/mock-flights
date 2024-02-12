@@ -5,10 +5,9 @@
 		searchFlightsParamsStore,
 		stateStore
 	} from '$lib/flights-commons/flights.store';
-	import type { FlightSearchRequest, UpcomingBooking } from '$lib/flights-commons/flights.type';
+	import type { UpcomingBooking } from '$lib/flights-commons/flights.type';
 	import RecentIcon from '$lib/icons/recentIcon.svelte';
 	import RightArrowHalf from '$lib/icons/rightArrowHalf.svelte';
-	import { cacheRecentFlightSearches } from '../../utils/flights.utils';
 
 	export let item: UpcomingBooking = {
 		title: 'title',
@@ -19,6 +18,7 @@
 		ctaButton: []
 	};
 	export let isRecent: boolean;
+
 	const ctaRecentItem: any = item.ctaButton?.[0];
 
 	function clickHandler() {

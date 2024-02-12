@@ -1,5 +1,5 @@
 import { crossfade } from 'svelte/transition';
-import { elasticInOut, quintOut } from 'svelte/easing';
+import { elasticInOut } from 'svelte/easing';
 import { get } from 'svelte/store';
 import { alertStore, configStore } from '$lib/flights-commons/flights.store';
 import type { City, FlightSearchRequest } from '$lib/flights-commons/flights.type';
@@ -8,18 +8,16 @@ export function getFormattedWallet(wallet: number, currencySymbol: string) {
 	return currencySymbol + new Intl.NumberFormat('en-IN').format(wallet);
 }
 
-export function catchError(
+export async function catchError(
 	callback: Function,
 	params?: any,
 	errorMesssage?: string,
 	errorHandler?: Function
 ) {
 	try {
-		return callback(params);
+		return await callback(params);
 	} catch (error: any) {
-		console.log(error);
-		console.log(errorMesssage);
-		alertStore.openAlert(errorMesssage || error, 'error');
+		alertStore.openAlert(errorMesssage ?? error.message, 'error');
 		if (errorHandler) errorHandler();
 	}
 }
@@ -91,7 +89,7 @@ export function cacheRecentFlightSearches(search: FlightSearchRequest) {
 		) {
 			return;
 		}
-		if (searches.length >= 5) {
+		if (searches.length >= 3) {
 			searches.pop();
 		}
 		searches.unshift(search);
@@ -122,7 +120,7 @@ export function cacheRecentCitySearches(city: City) {
 			return;
 		}
 		console.log(searches, city);
-		if (searches.length >= 5) {
+		if (searches.length >= 3) {
 			searches.pop();
 		}
 		searches.unshift(city);

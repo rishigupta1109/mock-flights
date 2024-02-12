@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { UpcomingBooking } from '$lib/flights-commons/flights.type';
 	import CarouselCard from './CorouselCard.svelte';
+
 	export let isRecent: boolean;
 	export let items: UpcomingBooking[];
 </script>

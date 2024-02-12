@@ -2,6 +2,7 @@
 	import { upcomingBookingStore } from '$lib/flights-commons/flights.store';
 	import RightArrowHalf from '$lib/icons/rightArrowHalf.svelte';
 	import Carousel from './Carousel.svelte';
+
 	$: upcomingFlights = $upcomingBookingStore.booking;
 </script>
 

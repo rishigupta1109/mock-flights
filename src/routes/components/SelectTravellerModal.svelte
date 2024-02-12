@@ -1,26 +1,28 @@
 <script lang="ts">
 	import CrossIcon from '$lib/icons/crossIcon.svelte';
-	import { type Guest, type Traveller } from '$lib/flights-commons/flights.type';
+	import { type Traveller } from '$lib/flights-commons/flights.type';
 	import {
 		configStore,
 		searchFlightsParamsStore,
 		stateStore
 	} from '$lib/flights-commons/flights.store';
 	import { getCountFromGuestType } from '../../utils/flights.utils';
+
+	let travellers: Traveller[] = configStore.getTravellerClasses();
+	let selectedTraveller: string = searchFlightsParamsStore
+		.getTravellerClass()
+		.key.toLocaleUpperCase();
+
 	$: open = $stateStore.isTravellerModalOpen;
 	$: passengersValues = $searchFlightsParamsStore.passenger;
-
 	$: guests = configStore.getGuests().map((guest) => {
 		return {
 			...guest,
 			value: getCountFromGuestType(guest.guestType, passengersValues)
 		};
 	});
-	let travellers: Traveller[] = configStore.getTravellerClasses();
 	$: totalPassengerCount = guests?.reduce((acc, guest) => acc + (guest.value || 0), 0);
-	let selectedTraveller: string = searchFlightsParamsStore
-		.getTravellerClass()
-		.key.toLocaleUpperCase();
+
 	function changeHandler(i: number, numToAdd: number) {
 		let adultCount = guests.find((guest) => guest.guestType === 'ADULT')?.value || 0;
 		if (!guests || !guests[i] || guests[i]?.value === undefined) return;
@@ -37,7 +39,6 @@
 		guests[i].value = (guests[i].value || 0) + numToAdd;
 		totalPassengerCount += numToAdd;
 	}
-	$: console.log($searchFlightsParamsStore);
 
 	function proceedHandler() {
 		const counts = {

@@ -2,7 +2,6 @@
 	import { goto } from '$app/navigation';
 	import type { City } from '$lib/flights-commons/flights.type';
 	import { flip } from 'svelte/animate';
-	import { crossfade } from 'svelte/transition';
 	import { receive, send } from '../../utils/flights.utils';
 
 	export let city: City[];

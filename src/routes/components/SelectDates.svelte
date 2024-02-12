@@ -8,27 +8,20 @@
 
 	let departureDate: any;
 	let returnDate: any;
-
-	console.log(
-		'searchFlightsParamsStore',
-		$searchFlightsParamsStore.departDate,
-		dayjs($searchFlightsParamsStore.departDate, 'DD-MM-YYYY').format('DD-MM-YYYY')
-	);
 	let departDate = dayjs($searchFlightsParamsStore.departDate, 'DD-MM-YYYY').toDate();
-
-	$: {
-		if (!isNaN(departDate.getTime()))
-			searchFlightsParamsStore.setDepartDate(dayjs(departDate).format('DD-MM-YYYY'));
-		else departDate = dayjs($searchFlightsParamsStore.departDate, 'DD-MM-YYYY').toDate();
-	}
-	$: console.log('departDate', departDate, departDate.getTime(), $searchFlightsParamsStore);
-	$: maxCalendarDays = configStore.getMaxCalenderDays();
 	let theme = {
 		calendar: {
 			maxWidth: '90vw',
 			maxHeight: '90vh'
 		}
 	};
+
+	$: {
+		if (!isNaN(departDate.getTime()))
+			searchFlightsParamsStore.setDepartDate(dayjs(departDate).format('DD-MM-YYYY'));
+		else departDate = dayjs($searchFlightsParamsStore.departDate, 'DD-MM-YYYY').toDate();
+	}
+	$: maxCalendarDays = configStore.getMaxCalenderDays();
 </script>
 
 <DuoCard>

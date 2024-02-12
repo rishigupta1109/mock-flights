@@ -11,7 +11,6 @@
 	$: passenger = $searchFlightsParamsStore.passenger;
 	$: TravellerClass = $searchFlightsParamsStore.travellerClass;
 	$: passengerCount = passenger?.adultCount + passenger?.childCount + passenger?.infantCount;
-	console.log(departDate);
 </script>
 
 <Navbar back={'/'}>

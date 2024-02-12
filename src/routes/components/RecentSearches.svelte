@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { FlightSearchRequest } from '$lib/flights-commons/flights.type';
-	import RecentIcon from '$lib/icons/recentIcon.svelte';
 	import dayjs from 'dayjs';
 	import { getRecentFlightSearches } from '../../utils/flights.utils';
 	import Carousel from './Carousel.svelte';
+
 	$: items = getRecentFlightSearches().map((item: FlightSearchRequest) => {
 		return {
 			title: `${item.src.city} → ${item.des.city}`,

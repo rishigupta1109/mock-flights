@@ -15,8 +15,11 @@
 	import Loading from '$lib/components/Loading.svelte';
 	import Alerts from '$lib/components/Alerts.svelte';
 	import SelectTravellerModal from './components/SelectTravellerModal.svelte';
+
 	dayjs.extend(customParseFormat);
+
 	let loading = true;
+
 	onMount(async () => {
 		await configStore.fetchConfig();
 		await walletStore.fetchWallet();
