@@ -24,9 +24,10 @@
 		out:send={{ key: c.iataCode }}
 	>
 		<span
+			data-testId={`city-${type}-code`}
 			class="rounded-sm border-base-300 border py-1/2 px-2 text-[9px] font-normal text-base-content"
 			>{c.iataCode}</span
 		>
-		<p class="text-base-content card-sub-heading">{c.city}</p>
+		<p data-testId={`city-${type}`} class="text-base-content card-sub-heading">{c.city}</p>
 	</div>
 {/each}

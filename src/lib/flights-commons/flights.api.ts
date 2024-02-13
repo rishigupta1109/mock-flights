@@ -32,6 +32,7 @@ const landingPageConfigURL =
 	'https://uat-web.gonuclei.com/com.gonuclei.flights.v1.LandingService/getConfig';
 
 export async function getConfig() {
+	console.log('getting config');
 	const cachedData = getCachedData('landingPageConfig');
 	if (cachedData !== null) {
 		return cachedData;
@@ -50,6 +51,7 @@ const walletURL =
 	'https://uat-web.gonuclei.com/com.gonuclei.commonservice.v1.CommonService/GetUserWallet';
 
 export async function getWallet() {
+	console.log('getting wallet');
 	const data = await fetchWithToken(walletURL, 'POST', {});
 	return data;
 }

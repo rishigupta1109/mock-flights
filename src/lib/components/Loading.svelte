@@ -6,8 +6,10 @@
 
 {#if isLoading}
 	<div
+		data-testId="loading-backdrop"
 		class="min-h-screen min-w-screen bg-base-100 fixed top-0 left-0 flex justify-center items-center w-full h-full z-50"
 	>
-		<span class="loading loading-spinner text-primary loading-lg"></span>
+		<span data-testId="loading-spinner" class="loading loading-spinner text-primary loading-lg"
+		></span>
 	</div>
 {/if}

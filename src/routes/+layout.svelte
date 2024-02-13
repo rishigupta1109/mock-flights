@@ -27,6 +27,7 @@
 		await popularCitiesStore.fetchPopularCities();
 		loading = false;
 	});
+	console.log('layout', loading);
 </script>
 
 <div class="bg-base-100 min-h-screen text-white">

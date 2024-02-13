@@ -19,6 +19,7 @@
 		"@testing-library/jest-dom": "^6.4.2",
 		"@testing-library/svelte": "^4.1.0",
 		"@types/jest": "^29.5.12",
+		"@vitest/coverage-v8": "^1.2.2",
 		"autoprefixer": "^10.4.17",
 		"daisyui": "^4.6.2",
 		"dayjs": "^1.11.10",

@@ -3,7 +3,7 @@
 	import RightArrowHalf from '$lib/icons/rightArrowHalf.svelte';
 	import Carousel from './Carousel.svelte';
 
-	$: upcomingFlights = $upcomingBookingStore.booking;
+	$: upcomingFlights = $upcomingBookingStore?.booking || [];
 </script>
 
 <div class="w-full flex flex-col">

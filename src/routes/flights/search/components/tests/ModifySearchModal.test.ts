@@ -1,11 +1,17 @@
-import { describe, it, vi } from 'vitest';
-import Page from './+page.svelte';
-import { render, waitFor } from '@testing-library/svelte';
-import { configStore, loadingStore } from '$lib/flights-commons/flights.store';
-import Layout from './+layout.svelte';
-import TestingLandingPage from './TestingLandingPage.svelte';
+import { render, fireEvent } from '@testing-library/svelte';
+import ModifySearchModal from '../ModifySearchModal.svelte'; // replace with the actual path to the ModifySearchModal component
+import { beforeAll, vi } from 'vitest';
+
 import * as APIS from '$lib/flights-commons/flights.api';
-export const DUMMY_CONFIG = {
+import {
+	configStore,
+	searchFlightsParamsStore,
+	stateStore
+} from '$lib/flights-commons/flights.store';
+import { get } from 'svelte/store';
+
+// Mock the stateStore
+const DUMMY_CONFIG = {
 	status: {
 		responseCode: 'SUCCESS',
 		responseCodeCause: 'NO_SPECIFIC_CAUSE',
@@ -251,15 +257,9 @@ const DUMMY_POPULAR_CITIES = {
 		}
 	]
 };
-describe('Testing Landing Page', () => {
-	it('should show Loading while config is fetching', () => {
-		const { getByTestId } = render(TestingLandingPage);
-		const backdrop = getByTestId('loading-backdrop');
-		const spinner = getByTestId('loading-spinner');
-		expect(backdrop).toBeInTheDocument();
-		expect(spinner).toBeInTheDocument();
-	});
-	it('should render landing page when config is loaded', async () => {
+
+describe('ModifySearchModal component', () => {
+	beforeAll(() => {
 		const getConfig = vi.spyOn(APIS, 'getConfig');
 		const getWallet = vi.spyOn(APIS, 'getWallet');
 		const getUpcomingBookings = vi.spyOn(APIS, 'getUpcomingBookings');
@@ -268,90 +268,35 @@ describe('Testing Landing Page', () => {
 		getWallet.mockResolvedValue(DUMMY_WALLET);
 		getUpcomingBookings.mockResolvedValue(DUMMY_UPCOMING_BOOKINGS);
 		getPopularCities.mockResolvedValue(DUMMY_POPULAR_CITIES);
-		const { getByTestId } = render(TestingLandingPage);
-		const backdrop = getByTestId('loading-backdrop');
-		const spinner = getByTestId('loading-spinner');
-		expect(backdrop).toBeInTheDocument();
-		expect(spinner).toBeInTheDocument();
+		configStore.set(DUMMY_CONFIG);
 
-		await waitFor(() => {
-			expect(getConfig).toHaveBeenCalled();
-			expect(getWallet).toHaveBeenCalled();
-			expect(getUpcomingBookings).toHaveBeenCalled();
-			expect(getPopularCities).toHaveBeenCalled();
-			expect(backdrop).not.toBeInTheDocument();
-			expect(spinner).not.toBeInTheDocument();
-			loadingStore.stop();
-			const landingPage = getByTestId('landing-page');
-			expect(landingPage).toBeInTheDocument();
+		searchFlightsParamsStore.set({
+			src: DUMMY_CONFIG.searchRequest.src,
+			des: DUMMY_CONFIG.searchRequest.des,
+			departDate: DUMMY_CONFIG.searchRequest.departDate,
+			partnerCountry: DUMMY_CONFIG.searchRequest.partnerCountry,
+			appliedSortFilter: [DUMMY_CONFIG.searchRequest.defaultSortFilter],
+			passenger: {
+				adultCount: 1,
+				childCount: 0,
+				infantCount: 0
+			},
+			travellerClass: {
+				key: 'ECONOMY',
+				value: 'Economy Class'
+			}
 		});
 	});
-	it('should show error message when config is not loaded', async () => {
-		const getConfig = vi.spyOn(APIS, 'getConfig');
-		getConfig.mockRejectedValue(new Error('Failed to fetch config'));
-		const { getByTestId, getByText } = render(TestingLandingPage);
-		const alert = getByTestId('alert');
-
-		await waitFor(() => {
-			expect(getConfig).toHaveBeenCalled();
-			expect(alert).toBeInTheDocument();
-			expect(getByText('Failed to fetch config')).toBeInTheDocument();
-		});
+	it('should render "Modify Search" title', () => {
+		const { getByText } = render(ModifySearchModal);
+		expect(getByText('Modify Search')).toBeInTheDocument();
 	});
-	it('should show error message when wallet is not loaded', async () => {
-		const getConfig = vi.spyOn(APIS, 'getConfig');
-		const getWallet = vi.spyOn(APIS, 'getWallet');
 
-		getConfig.mockResolvedValue(DUMMY_CONFIG);
-		getWallet.mockRejectedValue(new Error('Failed to fetch wallet'));
-
-		const { getByTestId, getByText } = render(TestingLandingPage);
-		const alert = getByTestId('alert');
-
-		await waitFor(() => {
-			expect(getConfig).toHaveBeenCalled();
-			expect(getWallet).toHaveBeenCalled();
-			expect(alert).toBeInTheDocument();
-			expect(getByText('Failed to fetch wallet')).toBeInTheDocument();
-		});
-	});
-	it('should show error message when upcoming bookings is not loaded', async () => {
-		const getConfig = vi.spyOn(APIS, 'getConfig');
-		const getWallet = vi.spyOn(APIS, 'getWallet');
-		const getUpcomingBookings = vi.spyOn(APIS, 'getUpcomingBookings');
-		getConfig.mockResolvedValue(DUMMY_CONFIG);
-		getWallet.mockResolvedValue(DUMMY_WALLET);
-		getUpcomingBookings.mockRejectedValue(new Error('Failed to fetch upcoming bookings'));
-		const { getByTestId, getByText } = render(TestingLandingPage);
-		const alert = getByTestId('alert');
-
-		await waitFor(() => {
-			expect(getConfig).toHaveBeenCalled();
-			expect(getWallet).toHaveBeenCalled();
-			expect(getUpcomingBookings).toHaveBeenCalled();
-			expect(alert).toBeInTheDocument();
-			expect(getByText('Failed to fetch upcoming bookings')).toBeInTheDocument();
-		});
-	});
-	it('should show error message when popular cities is not loaded', async () => {
-		const getConfig = vi.spyOn(APIS, 'getConfig');
-		const getWallet = vi.spyOn(APIS, 'getWallet');
-		const getUpcomingBookings = vi.spyOn(APIS, 'getUpcomingBookings');
-		const getPopularCities = vi.spyOn(APIS, 'getPopularCities');
-		getConfig.mockResolvedValue(DUMMY_CONFIG);
-		getWallet.mockResolvedValue(DUMMY_WALLET);
-		getUpcomingBookings.mockResolvedValue(DUMMY_UPCOMING_BOOKINGS);
-		getPopularCities.mockRejectedValue(new Error('Failed to fetch popular cities'));
-		const { getByTestId, getByText } = render(TestingLandingPage);
-		const alert = getByTestId('alert');
-
-		await waitFor(() => {
-			expect(getConfig).toHaveBeenCalled();
-			expect(getWallet).toHaveBeenCalled();
-			expect(getUpcomingBookings).toHaveBeenCalled();
-			expect(getPopularCities).toHaveBeenCalled();
-			expect(alert).toBeInTheDocument();
-			expect(getByText('Failed to fetch popular cities')).toBeInTheDocument();
-		});
+	it('should closeModifySearchModal when close button is clicked', async () => {
+		stateStore.openModifySearchModal();
+		const { getByTestId } = render(ModifySearchModal);
+		await fireEvent.click(getByTestId('close-modify-search-modal-btn'));
+		const closeModal = vi.spyOn(stateStore, 'closeModifySearchModal');
+		expect(get(stateStore).isModifySearchModalOpen).toBe(false);
 	});
 });

@@ -14,6 +14,7 @@
 			<h2 class="nav-text">Modify Search</h2>
 			<button
 				class="bg-white p-2 rounded-md"
+				data-testId="close-modify-search-modal-btn"
 				on:click={() => {
 					stateStore.closeModifySearchModal();
 				}}
@@ -27,6 +28,7 @@
 	<form
 		method="dialog"
 		class="modal-backdrop"
+		data-testId="backdrop-close-modify-search-modal"
 		on:submit={(e) => {
 			e.preventDefault();
 			stateStore.closeModifySearchModal();

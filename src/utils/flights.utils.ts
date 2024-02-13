@@ -19,6 +19,7 @@ export async function catchError(
 	} catch (error: any) {
 		alertStore.openAlert(errorMesssage ?? error.message, 'error');
 		if (errorHandler) errorHandler();
+		return null;
 	}
 }
 
@@ -43,6 +44,7 @@ export function getRGBColor(color: { red: number; green: number; blue: number })
 	if (!color) return false;
 	return `[rgb(${color.red}, ${color.green}, ${color.blue})]`;
 }
+
 export function getCountFromGuestType(
 	guestType: string,
 	passengersValues: { adultCount: number; childCount: number; infantCount: number }
@@ -56,6 +58,7 @@ export function getCountFromGuestType(
 	}
 	return 0;
 }
+
 export function containsValidChars(str: string) {
 	const pattern = new RegExp(get(configStore).searchRequest.configMap.SEARCH_CITY_REGEX);
 	return pattern.test(str);

@@ -38,7 +38,7 @@ function createAlertStore() {
 	const { subscribe, set, update } = writable<{
 		isOpen: boolean;
 		message: string;
-		type: 'info' | 'error' | 'success';
+		type: 'info' | 'error' | 'success' | 'warning';
 	}>({
 		isOpen: false,
 		message: '',
@@ -48,7 +48,7 @@ function createAlertStore() {
 		subscribe,
 		set,
 		update,
-		openAlert: (message: string, type: 'info' | 'error' | 'success') => {
+		openAlert: (message: string, type: 'info' | 'error' | 'success' | 'warning') => {
 			set({
 				isOpen: true,
 				message,
@@ -79,7 +79,11 @@ function createConfigStore() {
 		set,
 		update,
 		fetchConfig: async () => {
+			console.log('fetching config');
 			const data: ConfigResponse = await catchError(getConfig);
+			if (data === null) {
+				return;
+			}
 			set(data);
 			let travellerClass = data.searchRequest.travellerClass.toLocaleUpperCase();
 			let travellerClassObj = get(configStore).searchRequest.travellers.find(
@@ -248,14 +252,20 @@ const createWalletStore = () => {
 		set,
 		update,
 		fetchWallet: async () => {
+			console.log('fetching wallet');
 			const data: WalletResponse = await catchError(getWallet);
+			if (data === null) {
+				return;
+			}
 			console.log(data);
 			set(data);
 		},
 		getTotalBalance: () => {
+			if (!get(walletStore)) return 0;
 			return get(walletStore).walletDetails.walletTotalBalance;
 		},
 		getCurrencySymbol: () => {
+			if (!get(walletStore)) return '';
 			return get(walletStore).walletDetails.displayInfo.currency_symbol;
 		}
 	};
@@ -269,6 +279,9 @@ const createUpcomingBookingStore = () => {
 		update,
 		fetchUpcomingBookings: async () => {
 			const data: UpcomingBookingResponse = await catchError(getUpcomingBookings);
+			if (data === null) {
+				return;
+			}
 			console.log(data);
 			set(data);
 		},
@@ -286,6 +299,9 @@ const createPopularCitiesStore = () => {
 		update,
 		fetchPopularCities: async () => {
 			const data: AirportListResponse = await catchError(getPopularCities);
+			if (data === null) {
+				return;
+			}
 			console.log(data);
 			set(data);
 		},
@@ -303,6 +319,9 @@ const createSearchCityStore = () => {
 		update,
 		getSearchCity: async (searchText: string) => {
 			const data: AirportListResponse = await catchError(getSearchCity.bind(null, searchText));
+			if (data === null) {
+				return;
+			}
 			console.log(data);
 			set(data);
 			return data;
@@ -321,6 +340,9 @@ const createSearchFlightStore = () => {
 		update,
 		searchFlight: async (request: FlightSearchRequest) => {
 			const data: FlightSearchResponse = await catchError(searchFlight.bind(null, request));
+			if (data === null) {
+				return;
+			}
 			console.log(data);
 			set(data);
 			return data;

@@ -40,7 +40,12 @@
 		<span class="w-full border-[0.9px] border-dashed border-base-300" />
 		<CityWithCodeTag type="dest" city={des} />
 	</div>
-	<button class="h-10 aspect-square rounded-full" bind:this={exchangeBtn} on:click={handleExchange}>
+	<button
+		class="h-10 aspect-square rounded-full"
+		data-testId="exchange-btn"
+		bind:this={exchangeBtn}
+		on:click={handleExchange}
+	>
 		<ExchangeIcon color="primary" testId="exchange-icon" />
 	</button>
 </div>

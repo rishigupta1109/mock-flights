@@ -1,0 +1,1 @@
+{"result":[{"scriptId":"1064","url":"file:///Users/rishigupta/Desktop/Nuclei/Svelte/flights/my-app/src/setupTests.ts","functions":[{"functionName":"","ranges":[{"startOffset":0,"endOffset":698,"count":1}],"isBlockCoverage":true},{"functionName":"","ranges":[{"startOffset":13,"endOffset":698,"count":1}],"isBlockCoverage":true}]}]}

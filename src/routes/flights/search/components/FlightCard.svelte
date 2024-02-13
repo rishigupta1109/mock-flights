@@ -21,7 +21,7 @@
 <div class="flex flex-col gap-2 p-4 text-base-content border-t border-t-base-300">
 	<div class="flex justify-between items-start">
 		<span class="flex flex-col gap-1 w-1/3">
-			<img src={airlineIconUrl} alt="airline" class="w-10 h-10" />
+			<img src={airlineIconUrl} alt="airline" data-testId="airline-img" class="w-10 h-10" />
 			<span class="text-xs">{airlineName}</span>
 		</span>
 		<span class="flex flex-col items-center w-1/3">

@@ -1,26 +1,32 @@
-import { render } from '@testing-library/svelte';
-import CityWithCodeTag from '../CityWithCodeTag.svelte';
+import { render, fireEvent } from '@testing-library/svelte';
+import { goto } from '$app/navigation';
+import CityWithCodeTag from '../CityWithCodeTag.svelte'; // replace with the actual path to the CityWithCodeTag component
+import { vi } from 'vitest';
+
+vi.mock('$app/navigation', () => ({
+	goto: vi.fn()
+}));
 
 describe('CityWithCodeTag component', () => {
-	it('should render the correct city and code', () => {
-		const { getByText } = render(CityWithCodeTag, { props: { city: 'Banglore', code: 'BLR' } });
+	const city = [
+		{
+			iataCode: 'DEL',
+			city: 'New Delhi',
+			name: 'Indira Gandhi International Airport',
+			countryCode: 'IN',
+			iconUrl: ''
+		}
+	];
 
-		expect(getByText('Banglore')).toBeInTheDocument();
-		expect(getByText('BLR')).toBeInTheDocument();
+	it('should render city information', () => {
+		const { getByText } = render(CityWithCodeTag, { props: { city, type: 'src' } });
+		expect(getByText('New Delhi')).toBeInTheDocument();
+		expect(getByText('DEL')).toBeInTheDocument();
 	});
-	it('should render the city code as tag', () => {
-		const { getByText } = render(CityWithCodeTag, { props: { city: 'Banglore', code: 'BLR' } });
 
-		expect(getByText('BLR')).toHaveClass('rounded-sm border-base-300 border py-1 px-4 text-xs ');
-	});
-
-	it('should render the city code color as base-content', () => {
-		const { getByText } = render(CityWithCodeTag, { props: { city: 'Banglore', code: 'BLR' } });
-		expect(getByText('BLR')).toHaveClass('base-content-light');
-	});
-
-	it('should render the city name color as base-content', () => {
-		const { getByText } = render(CityWithCodeTag, { props: { city: 'Banglore', code: 'BLR' } });
-		expect(getByText('Banglore')).toHaveClass('text-base-content');
+	it('should call goto when clicked', async () => {
+		const { getByRole } = render(CityWithCodeTag, { props: { city, type: 'src' } });
+		await fireEvent.click(getByRole('button'));
+		expect(goto).toHaveBeenCalledWith('/city/search/src/');
 	});
 });
