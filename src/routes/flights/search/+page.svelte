@@ -14,6 +14,7 @@
 	import { catchError } from '../../../utils/flights.utils';
 	import { goto } from '$app/navigation';
 	import SortAndFilterOverlay from './components/SortAndFilterOverlay.svelte';
+	import SelectTravellerModal from '../../components/SelectTravellerModal.svelte';
 
 	onMount(
 		catchError.bind(
@@ -61,7 +62,7 @@
 		{/each}
 	</div>
 {:else}
-	<div class="h-full w-full flex p-8 justify-center items-center flex-col gap-4">
+	<div class="h-full mt-auto mb-auto w-full flex p-8 justify-center items-center flex-col gap-4">
 		<img src={imageURL} alt="no flights found" />
 		<p class="base-content-light">
 			{description}
@@ -78,3 +79,6 @@
 {/if}
 <ModifySearchModal />
 <SortAndFilterOverlay />
+{#key $stateStore.isTravellerModalOpen}
+	<SelectTravellerModal />
+{/key}

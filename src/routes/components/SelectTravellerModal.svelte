@@ -66,8 +66,10 @@
 	}
 </script>
 
-<dialog class="modal modal-bottom text-base-content bg-base-100 {open ? 'modal-open' : ''}">
-	<div class="modal-box flex flex-col gap-4 min-h-fit">
+<dialog
+	class="modal modal-bottom text-base-content rounded-md bg-base-100 {open ? 'modal-open' : ''}"
+>
+	<div class="modal-box flex rounded-md flex-col gap-4 min-h-fit">
 		<span class="w-full flex justify-end relative">
 			<span class="w-16 h-1 rounded-xl bg-[#878C9D] absolute left-1/2 -translate-x-1/2" />
 			<button
@@ -89,12 +91,12 @@
 				<div class="flex items-center bg-base-200 p-2 rounded-2xl">
 					<button
 						on:click={changeHandler.bind(null, i, -1)}
-						class="btn btn-xs border-none outline-none shadow-none">-</button
+						class="btn btn-xs text-md border-none outline-none shadow-none">-</button
 					>
 					<span class="mx-4">{guest.value}</span>
 					<button
 						on:click={changeHandler.bind(null, i, 1)}
-						class="btn btn-xs border-none outline-none shadow-none">+</button
+						class="btn btn-xs text-md border-none outline-none shadow-none">+</button
 					>
 				</div>
 			</div>
@@ -115,7 +117,9 @@
 			</span>
 		{/each}
 
-		<button on:click={proceedHandler} class="btn btn-success text-base-200 w-full">Proceed</button>
+		<button on:click={proceedHandler} class="btn my-6 btn-success text-base-200 w-full"
+			>Proceed</button
+		>
 	</div>
 	<form
 		method="dialog"

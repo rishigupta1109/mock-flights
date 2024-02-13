@@ -3,12 +3,14 @@
 	import type { City } from '$lib/flights-commons/flights.type';
 	import { flip } from 'svelte/animate';
 	import { receive, send } from '../../utils/flights.utils';
+	import { searchFlightsParamsStore } from '$lib/flights-commons/flights.store';
 
 	export let city: City[];
 	export let type: 'src' | 'dest' = 'src';
 
 	function handleClick() {
-		goto(`/city/search/${type}/`);
+		let obj = JSON.stringify($searchFlightsParamsStore);
+		goto(`/city/search/${type}/?obj=${obj}`);
 	}
 </script>
 
@@ -25,7 +27,7 @@
 	>
 		<span
 			data-testId={`city-${type}-code`}
-			class="rounded-sm border-base-300 border py-1/2 px-2 text-[9px] font-normal text-base-content"
+			class="rounded-sm border-base-300 min-w-8 border py-1/2 px-2 text-[9px] font-normal text-base-content"
 			>{c.iataCode}</span
 		>
 		<p data-testId={`city-${type}`} class="text-base-content card-sub-heading">{c.city}</p>

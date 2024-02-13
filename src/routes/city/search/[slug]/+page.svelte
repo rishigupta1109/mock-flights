@@ -5,16 +5,19 @@
 		searchCityStore,
 		searchFlightsParamsStore
 	} from '$lib/flights-commons/flights.store';
-	import type { Airport } from '$lib/flights-commons/flights.type';
+	import type { Airport, City } from '$lib/flights-commons/flights.type';
 	import CrossIcon from '$lib/icons/crossIcon.svelte';
 	import SearchIcon from '$lib/icons/searchIcon.svelte';
 	import CityList from './components/CityList.svelte';
 	import NavHeader from './components/NavHeader.svelte';
 	import {
 		cacheRecentCitySearches,
+		catchError,
 		containsValidChars,
 		getRecentCitySearches
 	} from '../../../../utils/flights.utils';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 
 	export let data: {
 		title: string;
@@ -26,11 +29,12 @@
 	let showSearchResults: boolean = false;
 	let timeOut: NodeJS.Timeout;
 	let error: string = '';
+	let loading = true;
 
-	const popularCities: Airport[] = popularCitiesStore.getPopularCities();
+	let popularCities: Airport[];
 
 	$: searchResults = $searchCityStore?.airportList || [];
-	$: recentCities = getRecentCitySearches();
+	let recentCities: Airport[] = [];
 	$: {
 		if (!containsValidChars(city)) {
 			error = $configStore?.searchRequest?.configMap?.SEARCH_CITY_REGEX_ERROR_MESSAGE;
@@ -39,8 +43,10 @@
 			error = '';
 			showSearchResults = true;
 			if (timeOut) clearTimeout(timeOut);
-			timeOut = setTimeout(() => {
-				searchCityStore.getSearchCity(city);
+			timeOut = setTimeout(async () => {
+				loading = true;
+				await searchCityStore.getSearchCity(city);
+				loading = false;
 			}, 1000);
 		}
 	}
@@ -57,8 +63,33 @@
 			searchFlightsParamsStore.setDes(city);
 		}
 		cacheRecentCitySearches(city);
-		if (typeof window !== 'undefined') window.history.back();
+		console.log($searchFlightsParamsStore);
+		if (typeof window !== 'undefined' && window.history.length > 1) window.history.back();
+		else goto('/');
 	}
+
+	onMount(
+		catchError.bind(
+			null,
+			async () => {
+				loading = true;
+				await configStore.fetchConfig();
+				await popularCitiesStore.fetchPopularCities();
+				popularCities = popularCitiesStore.getPopularCities() || [];
+				recentCities = getRecentCitySearches();
+				const query = new URLSearchParams(window.location.search);
+				const searchParam = query.get('obj') ? JSON.parse(query.get('obj') as string) : {};
+				console.log('searchParam', searchParam);
+				searchFlightsParamsStore.set(searchParam);
+				loading = false;
+			},
+			undefined,
+			'Invalid search params. Please try again.',
+			() => {
+				goto('/');
+			}
+		)
+	);
 </script>
 
 <NavHeader {title} />
@@ -87,7 +118,9 @@
 		{/key}
 	{/if}
 </div>
-{#if !showSearchResults}
+{#if loading}
+	<div class="skeleton"></div>
+{:else if !showSearchResults}
 	{#if recentCities.length > 0}
 		<CityList
 			on:click={clickHandler}

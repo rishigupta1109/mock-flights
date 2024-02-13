@@ -95,19 +95,20 @@ function createConfigStore() {
 			const departDate = dayjs(new Date(parseInt(data.searchRequest.departDate))).format(
 				'DD-MM-YYYY'
 			);
-			searchFlightsParamsStore.set({
-				src: data.searchRequest.src,
-				des: data.searchRequest.des,
-				departDate: departDate,
-				passenger: {
-					adultCount: data.searchRequest.adultCount,
-					infantCount: data.searchRequest.infantCount,
-					childCount: data.searchRequest.childCount
-				},
-				travellerClass: travellerClassObj,
-				appliedSortFilter: [data.searchRequest.defaultSortFilter],
-				partnerCountry: data.searchRequest.partnerCountry
-			});
+			if (!get(searchFlightsParamsStore))
+				searchFlightsParamsStore.set({
+					src: data.searchRequest.src,
+					des: data.searchRequest.des,
+					departDate: departDate,
+					passenger: {
+						adultCount: data.searchRequest.adultCount,
+						infantCount: data.searchRequest.infantCount,
+						childCount: data.searchRequest.childCount
+					},
+					travellerClass: travellerClassObj,
+					appliedSortFilter: [data.searchRequest.defaultSortFilter],
+					partnerCountry: data.searchRequest.partnerCountry
+				});
 		},
 		getDepartDate: () => {
 			return get(configStore).searchRequest.departDate;

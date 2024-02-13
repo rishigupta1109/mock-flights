@@ -60,7 +60,7 @@ export function getCountFromGuestType(
 }
 
 export function containsValidChars(str: string) {
-	const pattern = new RegExp(get(configStore).searchRequest.configMap.SEARCH_CITY_REGEX);
+	const pattern = new RegExp(get(configStore)?.searchRequest?.configMap?.SEARCH_CITY_REGEX);
 	return pattern.test(str);
 }
 

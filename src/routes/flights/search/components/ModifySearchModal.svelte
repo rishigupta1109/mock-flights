@@ -9,7 +9,7 @@
 		? 'modal-open'
 		: ''}"
 >
-	<div class="modal-box w-full rounded-t-none flex flex-col gap-4 min-h-fit">
+	<div class="modal-box w-full rounded-t-none flex flex-col gap-4 min-h-fit rounded-md">
 		<span class="w-full flex justify-between items-center">
 			<h2 class="nav-text">Modify Search</h2>
 			<button
